@@ -26,7 +26,7 @@ other dealings in this Software without prior written authorization
 from The Open Group.
 
 */
-/* $XFree86$ */
+/* $XFree86: xc/programs/bitmap/ReqMach.c,v 1.5 2002/02/18 21:43:17 herrb Exp $ */
 
 /*
  * Author:  Davor Matic, MIT X Consortium
