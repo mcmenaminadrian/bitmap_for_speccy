@@ -26,6 +26,7 @@ other dealings in this Software without prior written authorization
 from The Open Group.
 
 */
+/* $XFree86: xc/programs/bitmap/atobm.c,v 3.5 2001/12/14 20:00:41 dawes Exp $ */
 
 /*
  * atobm - ascii to bitmap filter
@@ -35,12 +36,15 @@ from The Open Group.
 #include <stdio.h>
 #include <ctype.h>
 #include <X11/Xos.h>
-
-extern char *malloc(), *calloc();
+#include <stdlib.h>
 
 char *ProgramName;
 
-static void usage ()
+static void doit(FILE *fp, char *filename, char *chars, 
+		 int xhot, int yhot, char *name);
+
+static void 
+usage (void)
 {
     fprintf (stderr, "usage:  %s [-options ...] [filename]\n\n",
 	     ProgramName);
@@ -59,8 +63,8 @@ static void usage ()
 }
 
 
-char *cify_name (name)
-    char *name;
+static char *
+cify_name (char *name)
 {
     int length = name ? strlen (name) : 0;
     int i;
@@ -72,8 +76,8 @@ char *cify_name (name)
     return name;
 }
 
-char *StripName(name)
-  char *name;
+static char *
+StripName(char *name)
 {
   char *begin = strrchr(name, '/');
   char *end, *result;
@@ -88,9 +92,8 @@ char *StripName(name)
   return (result);
 }
 
-main (argc, argv)
-    int argc;
-    char **argv;
+int
+main (int argc, char *argv[])
 {
     int i;
     int xhot = -1, yhot = -1;
@@ -160,12 +163,12 @@ main (argc, argv)
 }
 
 
-doit (fp, filename, chars, xhot, yhot, name)
-    FILE *fp;
-    char *filename;
-    char *chars;
-    int xhot, yhot;
-    char *name;
+static void
+doit (FILE *fp, 
+      char *filename, 
+      char *chars, 
+      int xhot, int yhot, 
+      char *name)
 {
     int i, j;
     int last_character;
@@ -182,7 +185,7 @@ doit (fp, filename, chars, xhot, yhot, name)
 	int used;
 	unsigned char *scanlines;
 	struct _scan_list *next;
-    } *head = NULL, *slist;
+    } *head = NULL, *slist = NULL;
     static unsigned char masktable[] = {
 	0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80 };
     int padded = 0;

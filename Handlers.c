@@ -26,6 +26,7 @@ other dealings in this Software without prior written authorization
 from The Open Group.
 
 */
+/* $XFree86: xc/programs/bitmap/Handlers.c,v 1.5 2002/02/18 21:43:17 herrb Exp $ */
 
 /*
  * Author:  Davor Matic, MIT X Consortium
@@ -38,9 +39,6 @@ from The Open Group.
 #include <stdio.h>
 #include <math.h>
 
-#ifndef abs
-#define abs(x)                        (((int)(x) > 0) ? (x) : -(x))
-#endif
 #define min(x, y)                     (((int)(x) < (int)(y)) ? (x) : (y))
 #define max(x, y)                     (((int)(x) > (int)(y)) ? (x) : (y))
 
@@ -57,11 +55,11 @@ extern Boolean DEBUG;
      (InBitmapY(BW, y) == (square_y)))
 
 
-void DragOnePointHandler(w, client_data, event, cont) /* ARGSUSED */
-     Widget       w;
-     XtPointer    client_data;
-     XEvent      *event;
-     Boolean     *cont;
+static void 
+DragOnePointHandler(Widget w, 
+		    XtPointer client_data, 
+		    XEvent *event, 
+		    Boolean *cont) /* ARGSUSED */
 {
     BWStatus *status = (BWStatus *)client_data;
     BitmapWidget BW = (BitmapWidget) w;
@@ -81,7 +79,7 @@ void DragOnePointHandler(w, client_data, event, cont) /* ARGSUSED */
 	    status->at_y = InBitmapY(BW, event->xbutton.y);
 	    status->success = status->draw ? True : False;
 	    if (status->draw)
-		(*status->draw)(w,
+		(*(DrawOnePointProc)status->draw)(w,
 				status->at_x, status->at_y, status->value);
 	}
 	break;
@@ -105,7 +103,7 @@ void DragOnePointHandler(w, client_data, event, cont) /* ARGSUSED */
 		status->at_x = InBitmapX(BW, event->xmotion.x);
 		status->at_y = InBitmapY(BW, event->xmotion.y);
 		if (status->draw)
-		    (*status->draw)(w,
+		    (*(DrawOnePointProc)status->draw)(w,
 				    status->at_x, status->at_y, status->value);
 	    }
 	}
@@ -114,11 +112,11 @@ void DragOnePointHandler(w, client_data, event, cont) /* ARGSUSED */
     }
 }
 
-void DragOnePointEngage(w, status, draw, state)
-    Widget      w;
-    BWStatus   *status;
-    void      (*draw)();
-    int        *state;
+void 
+DragOnePointEngage(Widget w, 
+		   BWStatus *status, 
+		   XtPointer draw, 
+		   int *state)
 {
     
     status->at_x = NotSet;
@@ -133,14 +131,14 @@ void DragOnePointEngage(w, status, draw, state)
 }
 
 /* ARGSUSED */
-void DragOnePointTerminate(w, status, client_data)
-    Widget     w;
-    BWStatus  *status;
-    XtPointer  client_data;
+void 
+DragOnePointTerminate(Widget w, 
+		      BWStatus *status, 
+		      XtPointer draw)
 {
     
     if (status->success) {
-	BWChangeNotify(w, NULL, NULL);
+	BWChangeNotify(w);
 	BWSetChanged(w);
     }
     
@@ -150,11 +148,11 @@ void DragOnePointTerminate(w, status, client_data)
     
 }
 
-void OnePointHandler(w, client_data, event, cont) /* ARGSUSED */
-    Widget       w;
-    XtPointer    client_data;
-    XEvent      *event;
-    Boolean     *cont;
+void 
+OnePointHandler(Widget w, 
+		XtPointer client_data, 
+		XEvent *event, 
+		Boolean *cont) /* ARGSUSED */
 {
     BWStatus    *status = (BWStatus *)client_data;
     BitmapWidget BW = (BitmapWidget) w;
@@ -169,7 +167,7 @@ void OnePointHandler(w, client_data, event, cont) /* ARGSUSED */
 	    BWClip(w, event->xexpose.x, event->xexpose.y,
 		   event->xexpose.width, event->xexpose.height);
 	    if (status->draw)
-		(*status->draw)(w,
+		(*(DrawOnePointProc)status->draw)(w,
 				status->at_x, status->at_y, Highlight);
 	    
 	    BWUnclip(w);
@@ -184,7 +182,7 @@ void OnePointHandler(w, client_data, event, cont) /* ARGSUSED */
 	    status->at_x = InBitmapX(BW, event->xbutton.x);
 	    status->at_y = InBitmapY(BW, event->xbutton.y);
 	    if (status->draw)
-		(*status->draw)(w,
+		(*(DrawOnePointProc)status->draw)(w,
 				status->at_x, status->at_y, Highlight);
 	}
 	break;
@@ -192,7 +190,7 @@ void OnePointHandler(w, client_data, event, cont) /* ARGSUSED */
     case ButtonRelease:
 	if (QuerySet(status->at_x, status->at_y)) {
 	    if (status->draw)
-		(*status->draw)(w,
+		(*(DrawOnePointProc)status->draw)(w,
 				status->at_x, status->at_y, Highlight);
 	    
 	    status->value = Value(BW, event->xbutton.button);
@@ -210,12 +208,12 @@ void OnePointHandler(w, client_data, event, cont) /* ARGSUSED */
 	    if (!QueryInSquare(BW, event->xmotion.x, event->xmotion.y,
 			       status->at_x, status->at_y)) {
 		if (status->draw)
-		    (*status->draw)(w,
+		    (*(DrawOnePointProc)status->draw)(w,
 				    status->at_x, status->at_y, Highlight);
 		status->at_x = InBitmapX(BW, event->xmotion.x);
 		status->at_y = InBitmapY(BW, event->xmotion.y);
 		if (status->draw)
-		    (*status->draw)(w,
+		    (*(DrawOnePointProc)status->draw)(w,
 				    status->at_x, status->at_y, Highlight);
 	    }
 	}      
@@ -223,11 +221,11 @@ void OnePointHandler(w, client_data, event, cont) /* ARGSUSED */
     }
 }
 
-void OnePointEngage(w, status, draw, state)
-    Widget      w;
-    BWStatus   *status;
-    void      (*draw)();
-    int        *state;
+void 
+OnePointEngage(Widget w, 
+	       BWStatus *status, 
+	       XtPointer draw, 
+	       int *state)
 {
     status->at_x = NotSet;
     status->at_y = NotSet;
@@ -241,11 +239,12 @@ void OnePointEngage(w, status, draw, state)
 		      FALSE, OnePointHandler, (XtPointer)status);
 }
 
-void OnePointImmediateEngage(w, status, draw, state)
-    Widget      w;
-    BWStatus   *status;
-    void      (*draw)();
-    int        *state;
+#if 0
+void 
+OnePointImmediateEngage(Widget w, 
+			BWStatus *status, 
+			XtPointer draw, 
+			int *state)
 {
     status->at_x = 0;
     status->at_y = 0;
@@ -254,7 +253,7 @@ void OnePointImmediateEngage(w, status, draw, state)
     status->state = *state;
     
     if (status->draw)
-	(*status->draw)(w,
+	(*(DrawOnePointProc)status->draw)(w,
 			status->at_x, status->at_y, Highlight);
     
     XtAddEventHandler(w,
@@ -262,25 +261,26 @@ void OnePointImmediateEngage(w, status, draw, state)
 		      ExposureMask | PointerMotionMask,
 		      FALSE, OnePointHandler, (XtPointer)status);
 }
+#endif
 
-void OnePointTerminate(w, status, draw)
-    Widget     w;
-    BWStatus  *status;
-    void     (*draw)();
+void 
+OnePointTerminate(Widget w, 
+		  BWStatus *status, 
+		  XtPointer draw)
 {
     
     if (status->success && draw) {
 	BWStoreToBuffer(w);
-	(*draw)(w,
+	(*(DrawOnePointProc)draw)(w,
 		status->at_x, status->at_y,
 		status->value);
-	BWChangeNotify(w, NULL, NULL);
+	BWChangeNotify(w);
 	BWSetChanged(w);
     }    
     else
 	if (QuerySet(status->at_x, status->at_y))
 	    if (status->draw)
-		(*status->draw)(w,
+		(*(DrawOnePointProc)status->draw)(w,
 				status->at_x, status->at_y, Highlight);
     
     XtRemoveEventHandler(w,
@@ -289,20 +289,20 @@ void OnePointTerminate(w, status, draw)
 			 FALSE, OnePointHandler, (XtPointer)status);
 }
 
-void OnePointTerminateTransparent(w, status, draw)
-    Widget     w;
-    BWStatus  *status;
-    void     (*draw)();
+void 
+OnePointTerminateTransparent(Widget w, 
+			     BWStatus *status, 
+			     XtPointer draw)
 {
     
     if (status->success && draw)
-	(*draw)(w,
+	(*(DrawOnePointProc)draw)(w,
 		status->at_x, status->at_y,
 		status->value);
     else
 	if (QuerySet(status->at_x, status->at_y))
 	    if (status->draw)
-		(*status->draw)(w,
+		(*(DrawOnePointProc)status->draw)(w,
 				status->at_x, status->at_y, Highlight);
     
     XtRemoveEventHandler(w,
@@ -313,11 +313,11 @@ void OnePointTerminateTransparent(w, status, draw)
 }
 
 
-void TwoPointsHandler(w, client_data, event, cont) /* ARGSUSED */
-    Widget      w;
-    XtPointer  client_data;
-    XEvent     *event;
-    Boolean    *cont;
+void 
+TwoPointsHandler(Widget w, 
+		 XtPointer client_data, 
+		 XEvent *event, 
+		 Boolean *cont) /* ARGSUSED */
 {
     BitmapWidget BW = (BitmapWidget) w;
     BWStatus   *status = (BWStatus *)client_data;
@@ -332,7 +332,7 @@ void TwoPointsHandler(w, client_data, event, cont) /* ARGSUSED */
 	    BWClip(w, event->xexpose.x, event->xexpose.y,
 		   event->xexpose.width, event->xexpose.height);
 	    if (status->draw)
-		(*status->draw)(w,
+		(*(DrawTwoPointProc)status->draw)(w,
 				status->from_x, status->from_y, 
 				status->to_x, status->to_y, Highlight);
 	    BWUnclip(w);
@@ -349,7 +349,7 @@ void TwoPointsHandler(w, client_data, event, cont) /* ARGSUSED */
 	    status->to_x = InBitmapX(BW, event->xbutton.x);
 	    status->to_y = InBitmapY(BW, event->xbutton.y);
 	    if (status->draw)
-		(*status->draw)(w,
+		(*(DrawTwoPointProc)status->draw)(w,
 				status->from_x, status->from_y, 
 				status->to_x, status->to_y, Highlight);
 	}
@@ -358,7 +358,7 @@ void TwoPointsHandler(w, client_data, event, cont) /* ARGSUSED */
     case ButtonRelease:
 	if (QuerySet(status->from_x, status->from_y)) {
 	    if (status->draw)
-		(*status->draw)(w,
+		(*(DrawTwoPointProc)status->draw)(w,
 				status->from_x, status->from_y, 
 				status->to_x, status->to_y, Highlight);
 	    status->value = Value(BW, event->xbutton.button);
@@ -377,13 +377,13 @@ void TwoPointsHandler(w, client_data, event, cont) /* ARGSUSED */
 		if (!QueryInSquare(BW, event->xmotion.x, event->xmotion.y,
 				   status->to_x, status->to_y)) {
 		    if (status->draw)
-			(*status->draw)(w,
+			(*(DrawTwoPointProc)status->draw)(w,
 					status->from_x, status->from_y, 
 					status->to_x, status->to_y, Highlight);
 		    status->to_x = InBitmapX(BW, event->xmotion.x);
 		    status->to_y = InBitmapY(BW, event->xmotion.y);
 		    if (status->draw)
-			(*status->draw)(w,
+			(*(DrawTwoPointProc)status->draw)(w,
 					status->from_x, status->from_y, 
 					status->to_x, status->to_y, Highlight);
 		}
@@ -392,7 +392,7 @@ void TwoPointsHandler(w, client_data, event, cont) /* ARGSUSED */
 		status->to_x = InBitmapX(BW, event->xmotion.x);
 		status->to_y = InBitmapY(BW, event->xmotion.y);
 		if (status->draw)
-		    (*status->draw)(w,
+		    (*(DrawTwoPointProc)status->draw)(w,
 				    status->from_x, status->from_y, 
 				    status->to_x, status->to_y, Highlight);
 	    }
@@ -401,11 +401,11 @@ void TwoPointsHandler(w, client_data, event, cont) /* ARGSUSED */
     }
 }
 
-void TwoPointsEngage(w, status, draw, state)
-    Widget     w;
-    BWStatus  *status;
-    void     (*draw)();
-    int       *state;
+void 
+TwoPointsEngage(Widget w, 
+		BWStatus *status, 
+		XtPointer draw, 
+		int *state)
 {
     
     status->from_x = NotSet;
@@ -422,26 +422,26 @@ void TwoPointsEngage(w, status, draw, state)
 		      FALSE, TwoPointsHandler, (XtPointer)status);
 }
 
-void TwoPointsTerminate(w, status, draw)
-    Widget    w;
-    BWStatus *status;
-    void    (*draw)();
+void 
+TwoPointsTerminate(Widget w, 
+		   BWStatus *status, 
+		   XtPointer draw)
 {
     
     if (status->success && draw) {
 	BWStoreToBuffer(w);
-	(*draw)(w,
+	(*(DrawTwoPointProc)draw)(w,
 		status->from_x, status->from_y,
 		status->to_x, status->to_y,
 		status->value);
-	BWChangeNotify(w, NULL, NULL);
+	BWChangeNotify(w);
 	BWSetChanged(w);
     }
     else
 	if (QuerySet(status->from_x, status->from_y) && 
 	    QuerySet(status->to_x, status->to_y))
 	    if (status->draw)
-		(*status->draw)(w,
+		(*(DrawTwoPointProc)status->draw)(w,
 				status->from_x, status->from_y, 
 				status->to_x, status->to_y, Highlight);
     
@@ -451,14 +451,14 @@ void TwoPointsTerminate(w, status, draw)
 			 FALSE, TwoPointsHandler, (XtPointer)status);
 }
 
-void TwoPointsTerminateTransparent(w, status, draw)
-    Widget    w;
-    BWStatus *status;
-    void    (*draw)();
+void 
+TwoPointsTerminateTransparent(Widget w, 
+			      BWStatus *status, 
+			      XtPointer draw)
 {
     
     if (status->success && draw)
-	(*draw)(w,
+	(*(DrawTwoPointProc)draw)(w,
 		status->from_x, status->from_y,
 		status->to_x, status->to_y,
 		status->value);
@@ -466,7 +466,7 @@ void TwoPointsTerminateTransparent(w, status, draw)
 	if (QuerySet(status->from_x, status->from_y) && 
 	    QuerySet(status->to_x, status->to_y))
 	    if (status->draw)
-		(*status->draw)(w,
+		(*(DrawTwoPointProc)status->draw)(w,
 				status->from_x, status->from_y, 
 				status->to_x, status->to_y, Highlight);
     
@@ -476,14 +476,14 @@ void TwoPointsTerminateTransparent(w, status, draw)
 			 FALSE, TwoPointsHandler, (XtPointer)status);
 }
 
-void TwoPointsTerminateTimed(w, status, draw)
-    Widget    w;
-    BWStatus *status;
-    void    (*draw)();
+void 
+TwoPointsTerminateTimed(Widget w, 
+			BWStatus *status, 
+			XtPointer draw)
 {
     
     if (status->success && draw)
-	(*draw)(w,
+	(*(DrawTwoPointProc)draw)(w,
 		status->from_x, status->from_y,
 		status->to_x, status->to_y,
 		status->btime);
@@ -491,7 +491,7 @@ void TwoPointsTerminateTimed(w, status, draw)
 	if (QuerySet(status->from_x, status->from_y) && 
 	    QuerySet(status->to_x, status->to_y))
 	    if (status->draw)
-		(*status->draw)(w,
+		(*(DrawTwoPointProc)status->draw)(w,
 				status->from_x, status->from_y, 
 				status->to_x, status->to_y, Highlight);
     
@@ -502,18 +502,19 @@ void TwoPointsTerminateTimed(w, status, draw)
 }
 
 /* ARGSUSED */
-void Interface(w, status, action)
-    Widget     w;
-    XtPointer  status;
-    void     (*action)();
+void 
+Interface(Widget w, 
+	  BWStatus *status, 
+	  XtPointer action)
 {
- 	(*action)(w);
+    (*(InterfaceProc)action)(w);
 }
 
-void Paste(w, at_x, at_y, value)
-    Widget    w;
-    Position  at_x, at_y;
-    int       value;
+void 
+Paste(Widget w, 
+      Position at_x, 
+      Position at_y, 
+      int value)
 {
     BitmapWidget    BW = (BitmapWidget) w;
     BWStatus       *my_status;
@@ -546,7 +547,7 @@ void Paste(w, at_x, at_y, value)
 	status->at_x = at_x;
 	status->at_y = at_y;
 	status->value = value;
-	(*status->draw) (w, at_x, at_y, Highlight);	
+	(*(DrawOnePointProc)status->draw) (w, at_x, at_y, Highlight);	
     }
     else {
 
@@ -560,16 +561,16 @@ void Paste(w, at_x, at_y, value)
 	status->from_x = status->to_x = at_x;
 	status->from_y = status->to_y = at_y;
 	status->value = value;
-	(*status->draw) (w, at_x, at_y, at_x, at_y, Highlight);
+	(*(DrawTwoPointProc)status->draw) (w, at_x, at_y, at_x, at_y, Highlight);
     }
 }
 
 
-void DragTwoPointsHandler(w, client_data, event, cont) /* ARGSUSED */
-    Widget      w;
-    XtPointer   client_data;
-    XEvent     *event;
-    Boolean    *cont;
+void 
+DragTwoPointsHandler(Widget w, 
+		     XtPointer client_data, 
+		     XEvent *event, 
+		     Boolean *cont) /* ARGSUSED */
 {
     BitmapWidget BW = (BitmapWidget) w;
     BWStatus   *status = (BWStatus *)client_data;
@@ -591,7 +592,7 @@ void DragTwoPointsHandler(w, client_data, event, cont) /* ARGSUSED */
 	    status->to_y = InBitmapY(BW, event->xbutton.y);
 	    status->success = status->draw ? True : False;
 	    if (status->draw)
-		(*status->draw)(w,
+		(*(DrawTwoPointProc)status->draw)(w,
 				status->from_x, status->from_y, 
 				status->to_x, status->to_y, status->value);
 	}
@@ -621,7 +622,7 @@ void DragTwoPointsHandler(w, client_data, event, cont) /* ARGSUSED */
 		    status->to_x = InBitmapX(BW, event->xmotion.x);
 		    status->to_y = InBitmapY(BW, event->xmotion.y);
 		    if (status->draw)
-			(*status->draw)(w,
+			(*(DrawTwoPointProc)status->draw)(w,
 					status->from_x, status->from_y, 
 					status->to_x, status->to_y, status->value);
 		}
@@ -631,11 +632,11 @@ void DragTwoPointsHandler(w, client_data, event, cont) /* ARGSUSED */
     }
 }
 
-void DragTwoPointsEngage(w, status, draw, state)
-    Widget     w;
-    BWStatus  *status;
-    void     (*draw)();
-    int       *state;
+void 
+DragTwoPointsEngage(Widget w, 
+		    BWStatus *status, 
+		    XtPointer draw, 
+		    int *state)
 {
     
     status->from_x = NotSet;
@@ -651,21 +652,21 @@ void DragTwoPointsEngage(w, status, draw, state)
 		      FALSE, DragTwoPointsHandler, (XtPointer)status);
 }
 
-void DragTwoPointsTerminate(w, status, draw)
-    Widget     w;
-    BWStatus  *status;
-    void     (*draw)();
+void 
+DragTwoPointsTerminate(Widget w, 
+		       BWStatus *status, 
+		       XtPointer draw)
 {
     
     if (status->success && draw) {
 	if ((status->from_x != status->to_x) 
 	    || 
 	    (status->from_y != status->to_y))
-	    (*draw)(w,
+	    (*(DrawTwoPointProc)draw)(w,
 		    status->from_x, status->from_y,
 		    status->to_x, status->to_y,
 		    status->value);
-	BWChangeNotify(w, NULL, NULL);
+	BWChangeNotify(w);
 	BWSetChanged(w);
     }
     

@@ -26,6 +26,7 @@ other dealings in this Software without prior written authorization
 from The Open Group.
 
 */
+/* $XFree86: xc/programs/bitmap/Graphics.c,v 1.6 2001/12/14 20:00:40 dawes Exp $ */
 
 /*
  * Author:  Davor Matic, MIT X Consortium
@@ -35,6 +36,8 @@ from The Open Group.
 #include <X11/StringDefs.h>
 #include <X11/Xfuncs.h>
 #include "BitmapP.h"
+#include "Bitmap.h"
+#include "Requests.h"
     
 #include <stdio.h>
 #include <math.h>
@@ -56,10 +59,9 @@ from The Open Group.
     ((bit)((*(image->data + (x) / 8 + (y) * image->bytes_per_line) &\
 	    (1 << ((x) % 8))) ? 1 : 0))
 
-
-bit BWGetBit(w, x, y)
-    Widget  w;
-     Position      x, y;
+#if 0
+bit 
+BWGetBit(Widget w, Position x, Position y)
 {
     BitmapWidget BW = (BitmapWidget) w;
     
@@ -68,7 +70,7 @@ bit BWGetBit(w, x, y)
     else
 	return NotSet;
 }
-
+#endif
 
 #define InvertBit(image, x, y)\
     (*(image->data + (x) / 8 + (y) * image->bytes_per_line) ^=\
@@ -90,9 +92,8 @@ bit BWGetBit(w, x, y)
 		   InWindowX(BW, x), InWindowY(BW, y),\
                    BW->bitmap.squareW, BW->bitmap.squareH)
 /*
-void HighlightSquare(BW, x, y)
-    BitmapWidget BW;
-    Position x, y;
+void 
+HighlightSquare(BitmapWidget BW, Position x, Position y)
 {
     XFillRectangle(XtDisplay(BW), XtWindow(BW),
                    BW->bitmap.highlighting_gc,
@@ -108,9 +109,8 @@ void HighlightSquare(BW, x, y)
                    BW->bitmap.squareW, BW->bitmap.squareH) 
 
 /*
-void DrawSquare(BW, x, y)
-    BitmapWidget BW;
-    Position x, y;
+void 
+DrawSquare(BitmapWidget BW, Position x, Position y)
 {
     XFillRectangle(XtDisplay(BW), XtWindow(BW),
                    BW->bitmap.drawing_gc,
@@ -126,10 +126,8 @@ void DrawSquare(BW, x, y)
     if (GetBit(BW->bitmap.image, x, y) != value)\
        InvertPoint(BW, x, y)
 
-void BWDrawPoint(w, x, y, value)
-    Widget  w;
-    Position      x, y;
-    bit           value;
+void 
+BWDrawPoint(Widget w, Position x, Position y, bit value)
 {
     BitmapWidget BW = (BitmapWidget) w;
     
@@ -141,9 +139,8 @@ void BWDrawPoint(w, x, y, value)
     }
 }
 
-XPoint *HotSpotShape(BW, x ,y)
-    BitmapWidget BW;
-    Position     x, y;
+static XPoint *
+HotSpotShape(BitmapWidget BW, Position x, Position y)
 {
     static XPoint points[5];
   
@@ -169,11 +166,13 @@ XPoint *HotSpotShape(BW, x ,y)
   XFillPolygon(XtDisplay(BW), XtWindow(BW), BW->bitmap.highlighting_gc,\
 	       HotSpotShape(BW, x, y), 5, Convex, CoordModeOrigin)
 
+/*
 XImage *CreateBitmapImage();
 void DestroyBitmapImage();
+*/
 
-void BWRedrawHotSpot(w)
-    Widget w;
+void 
+BWRedrawHotSpot(Widget w)
 {
     BitmapWidget BW = (BitmapWidget) w;
 
@@ -181,8 +180,8 @@ void BWRedrawHotSpot(w)
 	DrawHotSpot(BW, BW->bitmap.hot.x, BW->bitmap.hot.y);
 }
 
-void BWClearHotSpot(w)
-    Widget w;
+void 
+BWClearHotSpot(Widget w)
 {
     BitmapWidget BW = (BitmapWidget) w;
     
@@ -192,10 +191,8 @@ void BWClearHotSpot(w)
     }
 }
 
-void BWDrawHotSpot(w, x, y, value)
-    Widget w;
-    Position x, y;
-    int  value;
+void 
+BWDrawHotSpot(Widget w, Position x, Position y, int value)
 {
     BitmapWidget BW = (BitmapWidget) w;
     
@@ -219,9 +216,8 @@ void BWDrawHotSpot(w, x, y, value)
     }
 }
 
-void BWSetHotSpot(w, x, y)
-    Widget w;
-    Position x, y;
+void 
+BWSetHotSpot(Widget w, Position x, Position y)
 {
     if (QuerySet(x, y))
 	BWDrawHotSpot(w, x, y, Set);
@@ -231,10 +227,10 @@ void BWSetHotSpot(w, x, y)
 
 /* high level procedures */
 
-void BWRedrawSquares(w, x, y, width, height)
-    Widget  w;
-    register Position x, y;
-    Dimension width, height;
+void 
+BWRedrawSquares(Widget w, 
+		Position x, Position y, 
+		Dimension width, Dimension height)
 {
     BitmapWidget BW = (BitmapWidget) w;
     Position from_x = InBitmapX(BW, x);
@@ -254,10 +250,10 @@ void BWRedrawSquares(w, x, y, width, height)
 	    if (GetBit(BW->bitmap.image, x, y)) DrawSquare(BW, x, y);
 }
 
-void BWDrawGrid(w, from_x, from_y, to_x, to_y)
-     Widget w;
-     Position from_x, from_y,
-              to_x, to_y;
+void 
+BWDrawGrid(Widget w, 
+	   Position from_x, Position from_y, 
+	   Position to_x, Position to_y)
 {
     BitmapWidget BW = (BitmapWidget) w;
     int i;
@@ -283,10 +279,10 @@ void BWDrawGrid(w, from_x, from_y, to_x, to_y)
 }
 
 
-void BWRedrawGrid(w, x, y, width, height)
-    Widget w;
-    Position x, y;
-    Dimension width, height;
+void 
+BWRedrawGrid(Widget w, 
+	     Position x, Position y, 
+	     Dimension width, Dimension height)
 {
     BitmapWidget BW = (BitmapWidget) w;
     Position from_x = InBitmapX(BW, x);
@@ -298,11 +294,10 @@ void BWRedrawGrid(w, x, y, width, height)
 	BWDrawGrid(w, from_x, from_y, to_x, to_y);
 }
 
-void BWDrawLine(w, from_x, from_y, to_x, to_y, value)
-    Widget  w;
-    Position      from_x, from_y,
-                  to_x, to_y;
-    int           value;
+void 
+BWDrawLine(Widget w, 
+	   Position from_x, Position from_y, 
+	   Position to_x, Position to_y, int value)
 {
     Position i;
     register double x, y;
@@ -326,11 +321,10 @@ void BWDrawLine(w, from_x, from_y, to_x, to_y, value)
 	BWDrawPoint(w, from_x, from_y, value);
 }
 
-void BWBlindLine(w, from_x, from_y, to_x, to_y, value)
-    Widget  w;
-    Position      from_x, from_y,
-                  to_x, to_y;
-    int           value;
+void 
+BWBlindLine(Widget w, 
+	    Position from_x, Position from_y, 
+	    Position to_x, Position to_y, int value)
 {
     Position i;
     register double x, y;
@@ -356,11 +350,10 @@ void BWBlindLine(w, from_x, from_y, to_x, to_y, value)
 	BWDrawPoint(w, from_x, from_y, value);
 }
 
-void BWDrawRectangle(w, from_x, from_y, to_x, to_y, value)
-    Widget w;
-    Position     from_x, from_y,
-	to_x, to_y;
-    int          value;
+void 
+BWDrawRectangle(Widget w, 
+		Position from_x, Position from_y, 
+		Position to_x, Position to_y, int value)
 {
     register Position i;
     Dimension delta, width, height;
@@ -391,11 +384,10 @@ void BWDrawRectangle(w, from_x, from_y, to_x, to_y, value)
 		   to_x, to_y, value);
 }
   
-void BWDrawFilledRectangle(w, from_x, from_y, to_x, to_y, value)
-    Widget   w;
-    Position from_x, from_y,
-	     to_x, to_y;
-    int      value;
+void 
+BWDrawFilledRectangle(Widget w, 
+		      Position from_x, Position from_y, 
+		      Position to_x, Position to_y, int value)
 {
     register Position x, y;
 
@@ -407,11 +399,10 @@ void BWDrawFilledRectangle(w, from_x, from_y, to_x, to_y, value)
 	    BWDrawPoint(w, x, y, value);
 }
 
-void BWDrawCircle(w, origin_x, origin_y, point_x, point_y, value)
-    Widget  w;
-    Position      origin_x, origin_y,
-	point_x, point_y;
-    int           value;
+void 
+BWDrawCircle(Widget w, 
+	     Position origin_x, Position origin_y, 
+	     Position point_x, Position point_y, int value)
 {
     register Position i, delta;
     Dimension dx, dy, half;
@@ -445,11 +436,10 @@ void BWDrawCircle(w, origin_x, origin_y, point_x, point_y, value)
     }
 }
 
-void BWDrawFilledCircle(w, origin_x, origin_y, point_x, point_y, value)
-    Widget  w;
-    Position      origin_x, origin_y,
-	          point_x, point_y;
-    int           value;
+void 
+BWDrawFilledCircle(Widget w, 
+		   Position origin_x, Position origin_y, 
+		   Position point_x, Position point_y, int value)
 {
     register Position i, j, delta;
     Dimension dx, dy;
@@ -479,10 +469,8 @@ void BWDrawFilledCircle(w, origin_x, origin_y, point_x, point_y, value)
      else InvertPoint(BW, x, y);}
 
 /*
-void FloodLoop(BW, x, y, value)
-    BitmapWidget  BW;
-    Position      x, y;
-    int           value;
+static void 
+FloodLoop(BitmapWidget BW, Position x, Position y, int value)
 {
     if (QueryFlood(BW, x, y, value)) {
 	Flood(BW, x, y, value);
@@ -494,10 +482,8 @@ void FloodLoop(BW, x, y, value)
 }
 */
 
-void FloodLoop(BW, x, y, value)
-    BitmapWidget BW;
-    Position     x, y;
-    int          value;
+static void 
+FloodLoop(BitmapWidget BW, Position x, Position y, int value)
 {
     Position save_x, save_y, x_left, x_right;
     
@@ -581,10 +567,8 @@ void FloodLoop(BW, x, y, value)
     }
 }
 
-void BWFloodFill(w, x, y, value)
-    Widget  w;
-    Position      x, y;
-    int           value;
+void 
+BWFloodFill(Widget w, Position x, Position y, int value)
 {
     BitmapWidget BW = (BitmapWidget) w;
     int pixel;
@@ -604,12 +588,12 @@ void BWFloodFill(w, x, y, value)
      (BW->bitmap.hot.y == max(BW->bitmap.mark.from_y,\
 			      min(BW->bitmap.hot.y, BW->bitmap.mark.to_y))))
 
-void BWUp(w)
-    Widget w;
+void 
+BWUp(Widget w)
 {
     BitmapWidget BW = (BitmapWidget) w;
     register Position x, y;
-    bit first, up, down;
+    bit first, up, down=0;
     Position from_x, from_y, to_x, to_y;
 
     if (BWQueryMarked(w)) {
@@ -650,12 +634,12 @@ void BWUp(w)
 
 }
 
-void BWDown(w)
-    Widget w;
+void 
+BWDown(Widget w)
 {
     BitmapWidget BW = (BitmapWidget) w;
     register Position x, y;
-    bit first, down, up;
+    bit first, down, up=0;
     Position from_x, from_y, to_x, to_y;
 
     if (BWQueryMarked(w)) {
@@ -694,12 +678,12 @@ void BWDown(w)
 		     (BW->bitmap.hot.y + 1) % BW->bitmap.image->height);
 }
 
-void BWLeft(w)
-    Widget w;
+void 
+BWLeft(Widget w)
 {
     BitmapWidget BW = (BitmapWidget) w;
     register Position x, y;
-    bit first, left, right;
+    bit first, left, right=0;
     Position from_x, from_y, to_x, to_y;
     
     if (BWQueryMarked(w)) {
@@ -739,12 +723,12 @@ void BWLeft(w)
 		     BW->bitmap.hot.y);
 }
 
-void BWRight(w)
-    Widget w;
+void 
+BWRight(Widget w)
 {
     BitmapWidget BW = (BitmapWidget) w;
     register Position x, y;
-    bit first, right, left;
+    bit first, right, left=0;
     Position from_x, from_y, to_x, to_y;
     
     if (BWQueryMarked(w)) {
@@ -783,10 +767,10 @@ void BWRight(w)
 		     BW->bitmap.hot.y);
 }
 
-void TransferImageData();
+/* void TransferImageData(); */
 
-void BWFold(w)
-    Widget w;
+void 
+BWFold(Widget w)
 {
     BitmapWidget BW = (BitmapWidget) w;
     Position x, y, new_x, new_y;
@@ -830,8 +814,8 @@ void BWFold(w)
 }
 
 
-void BWClear(w)
-    Widget w;
+void 
+BWClear(Widget w)
 {
     BitmapWidget BW = (BitmapWidget) w;
     register Position x, y;
@@ -849,8 +833,8 @@ void BWClear(w)
 
 }
 
-void BWSet(w)
-    Widget w;
+void 
+BWSet(Widget w)
 {
     BitmapWidget BW = (BitmapWidget) w;
     register Position x, y;
@@ -864,12 +848,12 @@ void BWSet(w)
 		DrawSquare(BW, x, y);
     
     for (i = 0; i < length; i++)
-	BW->bitmap.image->data[i] = 255;
+	BW->bitmap.image->data[i] = (char)255;
 
 }
  
-void BWRedraw(w)
-    Widget w;
+void 
+BWRedraw(Widget w)
 {
     BitmapWidget BW = (BitmapWidget) w;
 
@@ -878,8 +862,8 @@ void BWRedraw(w)
 	       True);
 }
 
-void BWInvert(w)
-    Widget w;
+void 
+BWInvert(Widget w)
 {
     BitmapWidget BW = (BitmapWidget) w;
     int i, length;
@@ -896,8 +880,8 @@ void BWInvert(w)
 	BW->bitmap.image->data[i] ^= 255;
 }
 
-void BWFlipHoriz(w)
-    Widget w;
+void 
+BWFlipHoriz(Widget w)
 {
     BitmapWidget BW = (BitmapWidget) w;
     register Position x, y;
@@ -937,8 +921,8 @@ void BWFlipHoriz(w)
 		     BW->bitmap.image->height - 1 - BW->bitmap.hot.y);
 }
 
-void BWFlipVert(w)
-    Widget w;
+void 
+BWFlipVert(Widget w)
 {
     BitmapWidget BW = (BitmapWidget) w;
     register Position x, y;
@@ -979,8 +963,8 @@ void BWFlipVert(w)
 }
 
 
-void BWRotateRight(w)
-    Widget w;
+void 
+BWRotateRight(Widget w)
 {
     BitmapWidget BW = (BitmapWidget) w;
     Position x, y, delta, shift, tmp;
@@ -1061,8 +1045,8 @@ void BWRotateRight(w)
     
 }
 
-void BWRotateLeft(w)
-    Widget w;
+void 
+BWRotateLeft(Widget w)
 {
     BitmapWidget BW = (BitmapWidget) w;
     Position x, y,delta, shift, tmp;
@@ -1143,9 +1127,11 @@ void BWRotateLeft(w)
 }
 
 
-void CopyImageData(source, destination, from_x, from_y, to_x, to_y, at_x, at_y)
-    XImage *source, *destination;
-    Position  from_x, from_y, to_x, to_y, at_x, at_y;
+void 
+CopyImageData(XImage *source, XImage *destination, 
+	      Position from_x, Position from_y, 
+	      Position to_x, Position to_y, 
+	      Position at_x, Position at_y)
 {
     Position x, y, delta_x, delta_y;
     
@@ -1160,9 +1146,8 @@ void CopyImageData(source, destination, from_x, from_y, to_x, to_y, at_x, at_y)
 		ClearBit(destination, at_x + x, at_y + y);
 }
       
-XImage *ConvertToBitmapImage(BW, image)
-    BitmapWidget BW;
-    XImage *image;
+XImage *
+ConvertToBitmapImage(BitmapWidget BW, XImage *image)
 {
     XImage *bitmap_image;
     char   *data;
@@ -1181,8 +1166,8 @@ XImage *ConvertToBitmapImage(BW, image)
     return bitmap_image;
 }
 
-void TransferImageData(source, destination)
-    XImage *source, *destination;
+void 
+TransferImageData(XImage *source, XImage *destination)
 {
     Position x, y;
     
@@ -1192,8 +1177,8 @@ void TransferImageData(source, destination)
 		InvertBit(destination, x, y);
 }
 
-void BWStore(w)
-    Widget w;
+void 
+BWStore(Widget w)
 {
     BitmapWidget BW = (BitmapWidget) w;
     Dimension width, height;
@@ -1219,8 +1204,8 @@ void BWStore(w)
     }
 }
 
-void BWClearMarked(w)
-    Widget w;
+void 
+BWClearMarked(Widget w)
 {
     BitmapWidget BW = (BitmapWidget) w;
     
@@ -1234,9 +1219,8 @@ void BWClearMarked(w)
 }
 
 
-void BWDragMarked(w, at_x, at_y)
-    Widget w;
-    Position     at_x, at_y;
+void 
+BWDragMarked(Widget w, Position at_x, Position at_y)
 {
     BitmapWidget BW = (BitmapWidget) w;
 
@@ -1248,9 +1232,8 @@ void BWDragMarked(w, at_x, at_y)
 			Highlight);
 }
 
-void BWDragStored(w, at_x, at_y)
-    Widget       w;
-    Position     at_x, at_y;
+void 
+BWDragStored(Widget w, Position at_x, Position at_y)
 {
     BitmapWidget BW = (BitmapWidget) w;
     
@@ -1262,11 +1245,9 @@ void BWDragStored(w, at_x, at_y)
 			Highlight);
 }
 
-void DrawImageData(BW, image, at_x, at_y, value)
-    BitmapWidget BW;
-    XImage       *image;
-    Position     at_x, at_y;
-    int          value;
+static void 
+DrawImageData(BitmapWidget BW, XImage *image, 
+	      Position at_x, Position at_y, int value)
 {
     Position x, y;
     Boolean  C, S, I, H;
@@ -1281,7 +1262,7 @@ void DrawImageData(BW, image, at_x, at_y, value)
 	for (y = 0; y < image->height; y++) {
 	    A = GetBit(image, x, y);
 	    B = GetBit(BW->bitmap.image, at_x + x, at_y + y);
-	    if (A & C | (A | B) & S | (A ^ B) & I | (A | B) & H)
+	    if ((A & C) | ((A | B) & S) | ((A ^ B) & I) | ((A | B) & H))
 		value = (A & H) ? Highlight : Set;
 	    else
 		value = Clear;
@@ -1291,10 +1272,8 @@ void DrawImageData(BW, image, at_x, at_y, value)
 	}
 }
 
-void BWRestore(w, at_x, at_y, value)
-    Widget       w;
-    Position     at_x, at_y;
-    int          value;
+void 
+BWRestore(Widget w, Position at_x, Position at_y, int value)
 {
     BitmapWidget BW = (BitmapWidget) w;
     
@@ -1304,10 +1283,8 @@ void BWRestore(w, at_x, at_y, value)
     }
 }
 
-void BWCopy(w, at_x, at_y, value)
-    Widget       w;
-    Position     at_x, at_y;
-    int          value;
+void 
+BWCopy(Widget w, Position at_x, Position at_y, int value)
 {
     BitmapWidget BW = (BitmapWidget) w;
     XImage *storage;
@@ -1334,12 +1311,10 @@ void BWCopy(w, at_x, at_y, value)
     }
 }
 
-void BWMark();
+/* void BWMark(); */
 
-void BWMove(w, at_x, at_y, value)
-    Widget   w;
-    Position at_x, at_y;
-    int      value;
+void 
+BWMove(Widget w, Position at_x, Position at_y, int value)
 {
     BitmapWidget BW = (BitmapWidget) w;
     XImage *storage;
@@ -1375,8 +1350,8 @@ void BWMove(w, at_x, at_y, value)
     }
 }
 
-void BWRedrawMark(w)
-    Widget w;
+void 
+BWRedrawMark(Widget w)
 {
     BitmapWidget BW = (BitmapWidget) w;
     
@@ -1390,8 +1365,8 @@ void BWRedrawMark(w)
 		       InWindowY(BW, BW->bitmap.mark.from_y));
 }
 
-void BWStoreToBuffer(w)
-     Widget w;
+void 
+BWStoreToBuffer(Widget w)
 {
     BitmapWidget BW = (BitmapWidget) w;
     
@@ -1402,8 +1377,8 @@ void BWStoreToBuffer(w)
     BW->bitmap.buffer_mark = BW->bitmap.mark;
 }
 
-void BWUnmark(w)
-     Widget w;
+void 
+BWUnmark(Widget w)
 {
     BitmapWidget BW = (BitmapWidget) w;
 
@@ -1423,10 +1398,9 @@ void BWUnmark(w)
     }
 }
 
-void BWMark(w, from_x, from_y, to_x, to_y)
-    Widget w;
-    Position from_x, from_y,
-	     to_x, to_y;
+void 
+BWMark(Widget w, Position from_x, Position from_y, 
+       Position to_x, Position to_y)
 {
     BitmapWidget BW = (BitmapWidget) w;
 
@@ -1466,16 +1440,16 @@ void BWMark(w, from_x, from_y, to_x, to_y)
     }
 }
 
-void BWMarkAll(w)
-    Widget w;
+void 
+BWMarkAll(Widget w)
 {
   BitmapWidget BW = (BitmapWidget) w;
 
   BWMark(w, 0, 0, BW->bitmap.image->width - 1, BW->bitmap.image->height - 1);
 }
 
-void BWUndo(w)
-    Widget w;
+void 
+BWUndo(Widget w)
 {
     BitmapWidget BW = (BitmapWidget) w;
     Position x, y;
@@ -1505,8 +1479,8 @@ void BWUndo(w)
 
 }
 
-void BWHighlightAxes(w)
-    Widget w;
+void 
+BWHighlightAxes(Widget w)
 {
     BitmapWidget BW = (BitmapWidget) w;
 
@@ -1541,10 +1515,9 @@ typedef struct {
     Dimension *width, *height;
 } Table;
 
-XImage *ScaleBitmapImage(BW, src, scale_x, scale_y)
-    BitmapWidget BW;
-    XImage *src;
-    double scale_x, scale_y;
+XImage *
+ScaleBitmapImage(BitmapWidget BW, XImage *src, 
+		 double scale_x, double scale_y)
 {
     char *data;
     XImage *dst;

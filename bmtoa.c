@@ -26,6 +26,7 @@ other dealings in this Software without prior written authorization
 from The Open Group.
 
 */
+/* $XFree86: xc/programs/bitmap/bmtoa.c,v 3.7 2001/12/14 20:00:41 dawes Exp $ */
 
 /*
  * bmtoa - bitmap to ascii filter
@@ -39,13 +40,19 @@ from The Open Group.
 
 #include <X11/Xmu/Drawing.h>
 
-extern char *malloc();
+#include <stdlib.h>
+#include <unistd.h>
+#ifndef HAS_MKSTEMP
 extern char *mktemp();
+#endif
 
 char *ProgramName;
 
+static void print_scanline (unsigned int width, unsigned int height, 
+			    unsigned char *data, char *chars);
 
-static void usage ()
+static void 
+usage (void)
 {
     fprintf (stderr, "usage:  %s [-options ...] [filename]\n\n",
 	     ProgramName);
@@ -57,7 +64,8 @@ static void usage ()
     exit (1);
 }
 
-static char *copy_stdin ()
+static char *
+copy_stdin (void)
 {
 #ifdef WIN32
     static char tmpfilename[] = "/temp/bmtoa.XXXXXX";
@@ -68,6 +76,7 @@ static char *copy_stdin ()
     FILE *fp;
     int nread, nwritten;
 
+#ifndef HAS_MKSTEMP
     if (mktemp (tmpfilename) == NULL) {
 	fprintf (stderr,
 		 "%s:  unable to genererate temporary file name for stdin.\n",
@@ -75,6 +84,17 @@ static char *copy_stdin ()
 	exit (1);
     }
     fp = fopen (tmpfilename, "w");
+#else
+    int fd;
+
+    if ((fd = mkstemp(tmpfilename)) < 0) {
+	fprintf (stderr,
+		 "%s:  unable to genererate temporary file name for stdin.\n",
+		 ProgramName);
+	exit (1);
+    }
+    fp = fdopen(fd, "w");
+#endif
     while (1) {
 	buf[0] = '\0';
 	nread = fread (buf, 1, sizeof buf, stdin);
@@ -93,9 +113,8 @@ static char *copy_stdin ()
     return tmpfilename;
 }
 
-main (argc, argv) 
-    int argc;
-    char **argv;
+int
+main (int argc, char *argv[]) 
 {
     char *filename = NULL;
     int isstdin = 0;
@@ -153,10 +172,11 @@ main (argc, argv)
     exit (0);
 }
 
-print_scanline (width, height, data, chars)
-    unsigned int width, height;
-    unsigned char *data;
-    char *chars;
+static void
+print_scanline (unsigned int width, 
+		unsigned int height, 
+		unsigned char *data, 
+		char *chars)
 {
     char *scanline = (char *) malloc (width + 1);
     unsigned char *dp = data;

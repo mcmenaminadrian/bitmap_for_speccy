@@ -26,6 +26,7 @@ other dealings in this Software without prior written authorization
 from The Open Group.
 
 */
+/* $XFree86: xc/programs/bitmap/BitmapP.h,v 1.4 2001/12/14 20:00:40 dawes Exp $ */
 
 /*
  * Author:  Davor Matic, MIT X Consortium
@@ -36,7 +37,10 @@ from The Open Group.
 #ifndef _BitmapP_h
 #define _BitmapP_h
 
+#define bit int
+
 #include "Bitmap.h"
+#include "Requests.h"
 #include <X11/Xaw/SimpleP.h>
 
 typedef struct {
@@ -57,16 +61,20 @@ typedef struct _BitmapClassRec {
 
 extern BitmapClassRec bitmapClassRec;
 
+typedef void (*EngageProc)(Widget, BWStatus *, XtPointer, int *);
+typedef void (*TerminateProc)( Widget, BWStatus *, XtPointer);
+typedef void (*RemoveProc)(Widget w, BWStatus *, XtPointer);
+
 /**********/
 struct _BWRequestRec {
-  char       *name;
-  int         status_size;
-  void      (*engage)();
-  XtPointer   engage_client_data;
-  void      (*terminate)();
-  XtPointer   terminate_client_data;
-  void      (*remove)();
-  XtPointer   remove_client_data;
+  char         *name;
+  int           status_size;
+  EngageProc    engage;
+  XtPointer     engage_client_data;
+  TerminateProc terminate;
+  XtPointer     terminate_client_data;
+  RemoveProc    remove;
+  XtPointer     remove_client_data;
 } ;
 
 typedef struct {
@@ -117,7 +125,7 @@ typedef struct {
   /* private state */
   String           size;
   Position         horizOffset, vertOffset;
-  void           (*notify)();
+  XtActionProc     notify;
   BWRequestStack  *request_stack;
   Cardinal         cardinal, current;
   /*Boolean          trapping;*/
@@ -188,7 +196,16 @@ typedef struct _BitmapRec {
 #define Value(BW, button)   (BW->bitmap.button_function[button - 1])
 
 #define CreateCleanData(length) XtCalloc(length, sizeof(char))
-XImage *CreateBitmapImage();
-void DestroyBitmapImage();
+XImage *CreateBitmapImage(BitmapWidget BW, char *data, Dimension width, Dimension height);
+void DestroyBitmapImage(XImage **image);
+void  TransferImageData(XImage *source, XImage *destination);
+void CopyImageData(XImage *source, XImage *destination, 
+	      Position from_x, Position from_y, 
+	      Position to_x, Position to_y, 
+	      Position at_x, Position at_y);
+XImage *GetImage(BitmapWidget BW, Pixmap pixmap);
+XImage *ConvertToBitmapImage(BitmapWidget BW, XImage *image);
+XImage *ScaleBitmapImage(BitmapWidget BW, XImage *src, 
+			 double scale_x, double scale_y);
 
 #endif /* _BitmapP_h */

@@ -26,6 +26,7 @@ other dealings in this Software without prior written authorization
 from The Open Group.
 
 */
+/* $XFree86: xc/programs/bitmap/Dialog.h,v 1.4 2001/12/14 20:00:40 dawes Exp $ */
 
 /*
  * Author:  Davor Matic, MIT X Consortium
@@ -51,6 +52,6 @@ typedef struct {
     unsigned long flag;
 } DialogButton;
 
-extern Dialog CreateDialog();
-extern unsigned long PopupDialog();
-extern void PopdownDialog();
+extern Dialog CreateDialog(Widget, String, unsigned long);
+extern unsigned long PopupDialog(Dialog, String, String, String *, XtGrabKind);
+extern void PopdownDialog(Dialog, String *);
