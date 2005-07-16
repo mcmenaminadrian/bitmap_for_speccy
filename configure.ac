@@ -31,6 +31,9 @@ AM_CONFIG_HEADER(config.h)
 AC_PROG_CC
 AC_PROG_INSTALL
 
+AC_CHECK_FUNC([mkstemp], 
+   AC_DEFINE(HAS_MKSTEMP,1,[Define to 1 if you have the `mkstemp' function.]))
+
 # bmtoa checks for packages
 PKG_CHECK_MODULES(BMTOA, x11 xmu)
 AC_SUBST(BMTOA_CFLAGS)
