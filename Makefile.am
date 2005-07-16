@@ -69,7 +69,9 @@ APPDEFAULTFILES = \
 	Bitmap-color \
 	Bitmap
 
-$(APPDEFAULTFILES): %: %.ad
+SUFFIXES = .ad
+
+.ad:
 	cp $< $@
 
 appdefault_DATA = $(APPDEFAULTFILES)
