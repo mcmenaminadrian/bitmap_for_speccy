@@ -77,7 +77,7 @@ SUFFIXES = .ad
 appdefault_DATA = $(APPDEFAULTFILES)
 
 
-EXTRA_DIST = $(foreach X, $(APPDEFAULTFILES), $(X).ad)
+EXTRA_DIST = $(APPDEFAULTFILES:%=%.ad)
 CLEANFILES = $(APPDEFAULTFILES)
 
 # bitmaps
