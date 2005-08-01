@@ -55,7 +55,7 @@ atobm_SOURCES = \
 
 # mans
 
-dist_man_MANS = \
+dist_man1_MANS = \
              bitmap.man
 
 
