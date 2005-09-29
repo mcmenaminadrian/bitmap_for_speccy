@@ -67,6 +67,7 @@ appdefaultdir = $(sysconfdir)/X11/app-defaults
 
 APPDEFAULTFILES = \
 	Bitmap-color \
+	Bitmap-nocase \
 	Bitmap
 
 SUFFIXES = .ad
