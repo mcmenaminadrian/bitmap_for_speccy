@@ -102,10 +102,13 @@ dist_bitmap_DATA =	\
 
 appmandir =  $(mandir)/man$(APP_MAN_SUFFIX)
 
-appman_DATA = $(appman_SOURCES:man=$(APP_MAN_SUFFIX))
+appman_DATA = $(appman_SOURCES:man=$(APP_MAN_SUFFIX)) \
+	      $(man_shadows:=.$(APP_MAN_SUFFIX))
+
+BUILT_SOURCES = .shadows.DONE
 
 EXTRA_DIST += $(appman_SOURCES)
-CLEANFILES += $(appman_DATA)
+CLEANFILES += $(appman_DATA) $(BUILT_SOURCES)
 
 SED = sed
 
@@ -130,3 +133,11 @@ SUFFIXES += .$(APP_MAN_SUFFIX) .man
 
 .man.$(APP_MAN_SUFFIX):
 	sed $(MAN_SUBSTS) < $< > $@
+
+man_shadows = atobm bmtoa
+
+.shadows.DONE:
+	-rm -f $(man_shadows:=.$(APP_MAN_SUFFIX))
+	(for i in $(man_shadows:=.$(APP_MAN_SUFFIX)) ; do \
+	 echo .so man$(APP_MAN_SUFFIX)/bitmap.$(APP_MAN_SUFFIX) > $$i; \
+	 done)
