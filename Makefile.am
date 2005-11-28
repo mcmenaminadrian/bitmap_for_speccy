@@ -100,7 +100,7 @@ dist_bitmap_DATA =	\
 	Term		\
 	Up
 
-appmandir =  $(mandir)/man$(APP_MAN_SUFFIX)
+appmandir = $(APP_MAN_DIR)
 
 appman_DATA = $(appman_SOURCES:man=@APP_MAN_SUFFIX@) \
 	      $(man_shadows:=.@APP_MAN_SUFFIX@)
