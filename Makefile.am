@@ -66,9 +66,9 @@ appman_PRE = \
 appdefaultdir = @appdefaultdir@
 
 APPDEFAULTFILES = \
-	Bitmap-color \
-	Bitmap-nocase \
-	Bitmap
+	app-defaults/Bitmap-color \
+	app-defaults/Bitmap-nocase \
+	app-defaults/Bitmap
 
 SUFFIXES = .ad
 
