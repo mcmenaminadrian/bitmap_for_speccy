@@ -44,7 +44,6 @@ from The Open Group.
 #define max(x, y)                     (((x) > (y)) ? (x) : (y))
 
 
-extern Boolean DEBUG;
 
 /*****************************************************************************
  *                               Cut and Paste                               *

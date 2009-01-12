@@ -44,7 +44,6 @@ from The Open Group.
 
 #include "Requests.h"
 
-extern Boolean DEBUG;
 
 /*****************************************************************************
  *                                  Handlers                                 *

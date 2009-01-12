@@ -41,7 +41,6 @@ from The Open Group.
 #include <stdio.h>
 #include <math.h>
 
-extern Boolean DEBUG;
 
 /*****************************************************************************\
  * Request Machine: stacks up and handles requests from application calls.   * 

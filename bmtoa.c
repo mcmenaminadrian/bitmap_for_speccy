@@ -51,7 +51,7 @@ from The Open Group.
 extern char *mktemp();
 #endif
 
-char *ProgramName;
+static char *ProgramName;
 
 static void print_scanline (unsigned int width, unsigned int height, 
 			    unsigned char *data, char *chars);

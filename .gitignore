@@ -25,3 +25,7 @@ install-sh
 missing
 stamp-h1
 *~
+*.o
+ChangeLog
+bitmap-*.tar.*
+tags

@@ -59,34 +59,25 @@ appman_PRE = \
              bitmap.man
 
 
-# app default files
-
 # App default files  (*.ad)
+
+DISTCHECK_CONFIGURE_FLAGS = --with-appdefaultdir=\$${datadir}/X11/app-defaults
 
 appdefaultdir = @appdefaultdir@
 
-APPDEFAULTFILES = \
+dist_appdefault_DATA = \
 	app-defaults/Bitmap-color \
 	app-defaults/Bitmap-nocase \
 	app-defaults/Bitmap
 
-SUFFIXES = .ad
 
-.ad:
-	[ -d app-defaults ] || mkdir app-defaults
-	cp $< $@
-
-appdefault_DATA = $(APPDEFAULTFILES)
-
-
-EXTRA_DIST = $(APPDEFAULTFILES:%=%.ad) bitmap.icon ChangeLog autogen.sh
-CLEANFILES = $(APPDEFAULTFILES)
+EXTRA_DIST = bitmap.icon ChangeLog autogen.sh
 MAINTAINERCLEANFILES=ChangeLog
 
 .PHONY: ChangeLog
 
 ChangeLog:
-	(GIT_DIR=$(top_srcdir)/.git git-log > .changelog.tmp && mv .changelog.tmp ChangeLog; rm -f .changelog.tmp) || (touch ChangeLog; echo 'git directory not found: installing possibly empty changelog.' >&2)
+	$(CHANGELOG_CMD)
 
 dist-hook: ChangeLog
 
@@ -119,7 +110,7 @@ appman_DATA = $(appman_PRE:man=@APP_MAN_SUFFIX@) \
 BUILT_SOURCES = shadows.DONE
 
 EXTRA_DIST += $(appman_PRE)
-CLEANFILES += $(appman_DATA) $(BUILT_SOURCES)
+CLEANFILES = $(appman_DATA) $(BUILT_SOURCES)
 
 SED = sed
 
@@ -140,7 +131,7 @@ MAN_SUBSTS = \
 	-e 's|__miscmansuffix__|$(MISC_MAN_SUFFIX)|g' \
 	-e 's|__filemansuffix__|$(FILE_MAN_SUFFIX)|g'
 
-SUFFIXES += .$(APP_MAN_SUFFIX) .man
+SUFFIXES = .$(APP_MAN_SUFFIX) .man
 
 .man.$(APP_MAN_SUFFIX):
 	sed $(MAN_SUBSTS) < $< > $@

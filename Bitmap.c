@@ -229,7 +229,7 @@ static char translations2[] =
             set-changed()\n\
 ";
 
-Atom targets[] = {
+static Atom targets[] = {
     XA_BITMAP,
     XA_PIXMAP
 };

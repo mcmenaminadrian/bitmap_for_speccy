@@ -682,7 +682,7 @@ break;
 
 /* ARGSUSED */
 
-void SwitchImage()
+void SwitchImage(void)
 {
   if (image_visible) {
     XtPopdown(image_shell);
@@ -709,32 +709,32 @@ void SwitchImage()
   }
 }
 
-void SwitchGrid()
+void SwitchGrid(void)
 {
   BWSwitchGrid(bitmap_widget);
 }
 
-void SwitchDashed()
+void SwitchDashed(void)
 {
   BWSwitchDashed(bitmap_widget);
 }
 
-void SwitchAxes()
+void SwitchAxes(void)
 {
   BWSwitchAxes(bitmap_widget);
 }
 
-void SwitchStippled()
+void SwitchStippled(void)
 {
   BWSwitchStippled(bitmap_widget); 
 }
 
-void SwitchProportional()
+void SwitchProportional(void)
 {
   BWSwitchProportional(bitmap_widget);
 }
 
-void SwitchZoom()
+void SwitchZoom(void)
 {
   if (BWQueryZooming(bitmap_widget)) {
     BWZoomOut(bitmap_widget);
@@ -752,7 +752,7 @@ void SwitchZoom()
   }
 }
 
-void DoCut()
+void DoCut(void)
 {
   BWStore(bitmap_widget);
   BWStoreToBuffer(bitmap_widget);
@@ -762,19 +762,19 @@ void DoCut()
   BWSetChanged(bitmap_widget);
 }
 
-void DoCopy()
+void DoCopy(void)
 {
   BWStore(bitmap_widget);
   BWUnmark(bitmap_widget);
 }
 
-void DoPaste()
+void DoPaste(void)
 {
   BWRequestSelection(bitmap_widget, btime, TRUE); 
   BWEngageRequest(bitmap_widget, RestoreRequest, False, Plain);
 }
 
-void DoNew()
+void DoNew(void)
 {
   BWGetFilename(bitmap_widget, &filename);
   if (PopupDialog(input_dialog, "New file:",
@@ -791,7 +791,7 @@ void DoNew()
   }
 }
 
-void DoLoad()
+void DoLoad(void)
 {
   if (BWQueryChanged(bitmap_widget)) {
     BWGetFilename(bitmap_widget, &filename);
@@ -830,7 +830,7 @@ void DoLoad()
   }
 }
 
-void DoInsert()
+void DoInsert(void)
 {
   BWGetFilepath(bitmap_widget, &filename);
  RetryInsert:
@@ -848,7 +848,7 @@ void DoInsert()
   }
 }
 
-void DoSave()
+void DoSave(void)
 {
   BWGetFilename(bitmap_widget, &filename);
   if (!strcmp(filename, "")) 
@@ -864,7 +864,7 @@ void DoSave()
   }
 }
 
-void DoSaveAs()
+void DoSaveAs(void)
 {
   BWGetFilename(bitmap_widget, &filename);
  RetrySave:
@@ -883,7 +883,7 @@ void DoSaveAs()
   }
 }
 
-void DoResize()
+void DoResize(void)
 {
   Dimension width, height;
   format = "";
@@ -905,7 +905,7 @@ void DoResize()
   }
 }
 
-void DoRescale()
+void DoRescale(void)
 {
   Dimension width, height;
 
@@ -928,7 +928,7 @@ void DoRescale()
   }
 }
 
-void DoFilename()
+void DoFilename(void)
 {
   BWGetFilename(bitmap_widget, &filename);
   if (PopupDialog(input_dialog, "Change filename:",
@@ -938,7 +938,7 @@ void DoFilename()
   }
 }
 
-void DoBasename()
+void DoBasename(void)
 {  
   BWGetBasename(bitmap_widget, &base_name);
   if (PopupDialog(input_dialog, "Change basename:",
@@ -948,11 +948,7 @@ void DoBasename()
   }
 }
 
-void DoQuit(w, event, params, num_params) /* ARGSUSED */
-    Widget w;
-    XEvent *event;
-    String *params;
-    Cardinal *num_params;
+void DoQuit(Widget w, XEvent *event, String *params, Cardinal *num_params)
 {
   if (BWQueryChanged(bitmap_widget)) {
     BWGetFilename(bitmap_widget, &filename);

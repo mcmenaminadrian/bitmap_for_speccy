@@ -208,4 +208,6 @@ XImage *ConvertToBitmapImage(BitmapWidget BW, XImage *image);
 XImage *ScaleBitmapImage(BitmapWidget BW, XImage *src, 
 			 double scale_x, double scale_y);
 
+extern Boolean DEBUG;
+
 #endif /* _BitmapP_h */

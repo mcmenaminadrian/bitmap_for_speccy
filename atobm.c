@@ -38,7 +38,7 @@ from The Open Group.
 #include <X11/Xos.h>
 #include <stdlib.h>
 
-char *ProgramName;
+static char *ProgramName;
 
 static void doit(FILE *fp, char *filename, char *chars, 
 		 int xhot, int yhot, char *name);
