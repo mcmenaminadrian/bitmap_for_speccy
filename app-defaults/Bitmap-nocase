@@ -1,6 +1,4 @@
-! $Xorg: Bitmap.ad,v 1.3 2000/08/17 19:53:49 cpqbld Exp $
 !
-! $XFree86: $
 !
 ! The App-defaults file for Bitmap for use on file systems
 ! that are not case sensitive.
