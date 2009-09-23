@@ -23,7 +23,7 @@ bin_PROGRAMS = bitmap bmtoa atobm
 
 # bitmap
 
-bitmap_CFLAGS = $(BITMAP_CFLAGS)
+bitmap_CFLAGS = $(CWARNFLAGS) $(BITMAP_CFLAGS)
 bitmap_LDADD = $(BITMAP_LIBS) -lm
 
 bitmap_SOURCES = \
@@ -41,14 +41,14 @@ bitmap_SOURCES = \
 
 # bmtoa
 
-bmtoa_CFLAGS = $(BMTOA_CFLAGS)
+bmtoa_CFLAGS = $(CWARNFLAGS) $(BMTOA_CFLAGS)
 bmtoa_LDADD = $(BMTOA_LIBS)
 bmtoa_SOURCES = \
          bmtoa.c
 
 # atobm
 
-atobm_CFLAGS = $(ATOBM_CFLAGS)
+atobm_CFLAGS = $(CWARNFLAGS) $(ATOBM_CFLAGS)
 atobm_LDADD = $(ATOBM_LDADD)
 atobm_SOURCES = \
          atobm.c

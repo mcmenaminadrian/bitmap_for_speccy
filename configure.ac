@@ -26,9 +26,9 @@ AC_INIT(bitmap,[1.0.3], [https://bugs.freedesktop.org/enter_bug.cgi?product=xorg
 AM_INIT_AUTOMAKE([dist-bzip2])
 AM_MAINTAINER_MODE
 
-# Require xorg-macros: XORG_CWARNFLAGS, XORG_CHANGELOG
-m4_ifndef([XORG_MACROS_VERSION], [AC_FATAL([must install xorg-macros 1.2 or later before running autoconf/autogen])])
-XORG_MACROS_VERSION(1.2)
+# Require xorg-macros: XORG_DEFAULT_OPTIONS
+m4_ifndef([XORG_MACROS_VERSION], [AC_FATAL([must install xorg-macros 1.3 or later before running autoconf/autogen])])
+XORG_MACROS_VERSION(1.3)
 
 AM_CONFIG_HEADER(config.h)
 
@@ -36,20 +36,18 @@ AC_PROG_CC
 AM_PROG_CC_C_O
 AC_PROG_INSTALL
 
-XORG_CWARNFLAGS
+XORG_DEFAULT_OPTIONS
 
 AC_CHECK_FUNC([mkstemp], 
    AC_DEFINE(HAS_MKSTEMP,1,[Define to 1 if you have the "mkstemp" function.]))
 
 # bmtoa checks for packages
 PKG_CHECK_MODULES(BMTOA, x11 xmu)
-BMTOA_CFLAGS="$CWARNFLAGS $BMTOA_CFLAGS"
 AC_SUBST(BMTOA_CFLAGS)
 AC_SUBST(BMTOA_LIBS)
 
 # atobm checks for packages
 PKG_CHECK_MODULES(ATOBM, x11)
-ATOBM_CFLAGS="$CWARNFLAGS $ATOBM_CFLAGS"
 AC_SUBST(ATOBM_CFLAGS)
 AC_SUBST(ATOBM_LIBS)
 
@@ -57,7 +55,7 @@ AC_SUBST(ATOBM_LIBS)
 PKG_CHECK_MODULES(BITMAP, xaw7)
 PKG_CHECK_MODULES(XBITMAPS, xbitmaps)
 
-BITMAP_CFLAGS="$CWARNFLAGS $BITMAP_CFLAGS $XBITMAPS_CFLAGS"
+BITMAP_CFLAGS="$BITMAP_CFLAGS $XBITMAPS_CFLAGS"
 BITMAP_LIBS="$BITMAP_LIBS $XBITMAPS_LIBS"
 
 AC_SUBST(BITMAP_CFLAGS)
@@ -70,9 +68,5 @@ AC_ARG_WITH(appdefaultdir,
 	  [specify directory for app-defaults files (default is autodetected)]),
 	[appdefaultdir="$withval"], [appdefaultdir="${xt_appdefaultdir}"])
 AC_SUBST(appdefaultdir)
-
-XORG_MANPAGE_SECTIONS
-XORG_RELEASE_VERSION
-XORG_CHANGELOG
 
 AC_OUTPUT([Makefile])
