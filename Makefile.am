@@ -71,7 +71,7 @@ dist_appdefault_DATA = \
 	app-defaults/Bitmap
 
 
-EXTRA_DIST = bitmap.icon ChangeLog autogen.sh
+EXTRA_DIST = bitmap.icon ChangeLog
 MAINTAINERCLEANFILES=ChangeLog
 
 .PHONY: ChangeLog
