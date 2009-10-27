@@ -71,8 +71,7 @@ dist_appdefault_DATA = \
 	app-defaults/Bitmap
 
 
-EXTRA_DIST = bitmap.icon ChangeLog
-MAINTAINERCLEANFILES=ChangeLog
+EXTRA_DIST = bitmap.icon 
 
 .PHONY: ChangeLog
 
