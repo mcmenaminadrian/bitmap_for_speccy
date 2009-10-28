@@ -73,12 +73,15 @@ dist_appdefault_DATA = \
 
 EXTRA_DIST = bitmap.icon 
 
-.PHONY: ChangeLog
+.PHONY: ChangeLog INSTALL
+
+INSTALL:
+	$(INSTALL_CMD)
 
 ChangeLog:
 	$(CHANGELOG_CMD)
 
-dist-hook: ChangeLog
+dist-hook: ChangeLog INSTALL
 
 # bitmaps
 
