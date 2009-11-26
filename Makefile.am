@@ -71,7 +71,7 @@ dist_appdefault_DATA = \
 	app-defaults/Bitmap
 
 
-EXTRA_DIST = bitmap.icon 
+EXTRA_DIST = bitmap.icon autogen.sh
 
 .PHONY: ChangeLog INSTALL
 
@@ -112,6 +112,7 @@ appman_DATA = $(appman_PRE:man=@APP_MAN_SUFFIX@) \
 BUILT_SOURCES = shadows.DONE
 
 EXTRA_DIST += $(appman_PRE)
+MAINTAINERCLEANFILES = ChangeLog INSTALL
 CLEANFILES = $(appman_DATA) $(BUILT_SOURCES)
 
 SED = sed
