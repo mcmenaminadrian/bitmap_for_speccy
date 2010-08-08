@@ -38,29 +38,13 @@ AC_PROG_CC
 AM_PROG_CC_C_O
 AC_PROG_INSTALL
 
-
 AC_CHECK_FUNC([mkstemp], 
    AC_DEFINE(HAS_MKSTEMP,1,[Define to 1 if you have the "mkstemp" function.]))
 
-# bmtoa checks for packages
+# Obtain compiler/linker options from depedencies
 PKG_CHECK_MODULES(BMTOA, x11 xmu)
-AC_SUBST(BMTOA_CFLAGS)
-AC_SUBST(BMTOA_LIBS)
-
-# atobm checks for packages
 PKG_CHECK_MODULES(ATOBM, x11)
-AC_SUBST(ATOBM_CFLAGS)
-AC_SUBST(ATOBM_LIBS)
-
-# bitmap checks for packages
-PKG_CHECK_MODULES(BITMAP, xaw7 xmu)
-PKG_CHECK_MODULES(XBITMAPS, xbitmaps)
-
-BITMAP_CFLAGS="$BITMAP_CFLAGS $XBITMAPS_CFLAGS"
-BITMAP_LIBS="$BITMAP_LIBS $XBITMAPS_LIBS"
-
-AC_SUBST(BITMAP_CFLAGS)
-AC_SUBST(BITMAP_LIBS)
+PKG_CHECK_MODULES(BITMAP, xbitmaps xaw7 xmu)
 
 PKG_CHECK_MODULES(APPDEFS, xt)
 xt_appdefaultdir=`$PKG_CONFIG --variable=appdefaultdir xt`
