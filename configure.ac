@@ -54,4 +54,5 @@ AC_ARG_WITH(appdefaultdir,
 	[appdefaultdir="$withval"], [appdefaultdir="${xt_appdefaultdir}"])
 AC_SUBST(appdefaultdir)
 
-AC_OUTPUT([Makefile])
+AC_OUTPUT([Makefile
+           man/Makefile])

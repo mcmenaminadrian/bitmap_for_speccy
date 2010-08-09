@@ -19,6 +19,7 @@
 #  TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 #  PERFORMANCE OF THIS SOFTWARE.
 
+SUBDIRS=man
 bin_PROGRAMS = bitmap bmtoa atobm
 
 # bitmap
@@ -52,12 +53,6 @@ atobm_CFLAGS = $(CWARNFLAGS) $(ATOBM_CFLAGS)
 atobm_LDADD = $(ATOBM_LDADD)
 atobm_SOURCES = \
          atobm.c
-
-# mans
-
-appman_PRE = \
-             bitmap.man
-
 
 # App default files  (*.ad)
 
@@ -102,29 +97,5 @@ dist_bitmap_DATA =	\
 	Term		\
 	Up
 
-APP_MAN_DIR_SUFFIX = $(APP_MAN_DIR:@mandir@/man%=%)
-
-appmandir = $(APP_MAN_DIR)
-
-appman_DATA = $(appman_PRE:man=@APP_MAN_SUFFIX@) \
-	      $(man_shadows:=.@APP_MAN_SUFFIX@)
-
-BUILT_SOURCES = shadows.DONE
-
-EXTRA_DIST += $(appman_PRE)
 MAINTAINERCLEANFILES = ChangeLog INSTALL
-CLEANFILES = $(appman_DATA) $(BUILT_SOURCES)
 
-SUFFIXES = .$(APP_MAN_SUFFIX) .man
-
-# String replacements in MAN_SUBSTS now come from xorg-macros.m4 via configure
-.man.$(APP_MAN_SUFFIX):
-	$(AM_V_GEN)$(SED) $(MAN_SUBSTS) < $< > $@
-
-man_shadows = atobm bmtoa
-
-shadows.DONE:
-	-rm -f $(man_shadows:=.@APP_MAN_SUFFIX@)
-	(for i in $(man_shadows:=.@APP_MAN_SUFFIX@) ; do \
-	 echo .so man$(APP_MAN_DIR_SUFFIX)/bitmap.$(APP_MAN_SUFFIX) > $$i; \
-	 done)
