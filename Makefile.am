@@ -22,11 +22,8 @@
 SUBDIRS=man
 bin_PROGRAMS = bitmap bmtoa atobm
 
-# bitmap
-
 bitmap_CFLAGS = $(CWARNFLAGS) $(BITMAP_CFLAGS)
 bitmap_LDADD = $(BITMAP_LIBS) -lm
-
 bitmap_SOURCES = \
          BitEdit.c \
          CutPaste.c \
@@ -40,48 +37,17 @@ bitmap_SOURCES = \
          Dialog.h \
          Requests.h
 
-# bmtoa
-
 bmtoa_CFLAGS = $(CWARNFLAGS) $(BMTOA_CFLAGS)
 bmtoa_LDADD = $(BMTOA_LIBS)
-bmtoa_SOURCES = \
-         bmtoa.c
-
-# atobm
+bmtoa_SOURCES = bmtoa.c
 
 atobm_CFLAGS = $(CWARNFLAGS) $(ATOBM_CFLAGS)
 atobm_LDADD = $(ATOBM_LDADD)
-atobm_SOURCES = \
-         atobm.c
-
-# App default files  (*.ad)
-
-DISTCHECK_CONFIGURE_FLAGS = --with-appdefaultdir=\$${datadir}/X11/app-defaults
-
-appdefaultdir = @appdefaultdir@
-
-dist_appdefault_DATA = \
-	app-defaults/Bitmap-color \
-	app-defaults/Bitmap-nocase \
-	app-defaults/Bitmap
-
+atobm_SOURCES = atobm.c
 
 EXTRA_DIST = bitmap.icon autogen.sh
 
-.PHONY: ChangeLog INSTALL
-
-INSTALL:
-	$(INSTALL_CMD)
-
-ChangeLog:
-	$(CHANGELOG_CMD)
-
-dist-hook: ChangeLog INSTALL
-
-# bitmaps
-
 bitmapdir = $(includedir)/X11/bitmaps
-
 dist_bitmap_DATA =	\
 	Dashes		\
 	Down		\
@@ -97,5 +63,23 @@ dist_bitmap_DATA =	\
 	Term		\
 	Up
 
+# App default files  (*.ad)
+DISTCHECK_CONFIGURE_FLAGS = --with-appdefaultdir=\$${datadir}/X11/app-defaults
+
+appdefaultdir = @appdefaultdir@
+dist_appdefault_DATA = \
+	app-defaults/Bitmap-color \
+	app-defaults/Bitmap-nocase \
+	app-defaults/Bitmap
+
 MAINTAINERCLEANFILES = ChangeLog INSTALL
 
+.PHONY: ChangeLog INSTALL
+
+INSTALL:
+	$(INSTALL_CMD)
+
+ChangeLog:
+	$(CHANGELOG_CMD)
+
+dist-hook: ChangeLog INSTALL
