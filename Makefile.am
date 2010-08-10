@@ -45,7 +45,7 @@ atobm_CFLAGS = $(CWARNFLAGS) $(ATOBM_CFLAGS)
 atobm_LDADD = $(ATOBM_LDADD)
 atobm_SOURCES = atobm.c
 
-EXTRA_DIST = bitmap.icon autogen.sh
+EXTRA_DIST = autogen.sh
 
 bitmapdir = $(includedir)/X11/bitmaps
 dist_bitmap_DATA =	\
