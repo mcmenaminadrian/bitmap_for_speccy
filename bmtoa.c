@@ -180,18 +180,11 @@ print_scanline (unsigned int width,
 		unsigned char *data, 
 		char *chars)
 {
-    char *scanline = (char *) malloc (width + 1);
     unsigned char *dp = data;
     int row, column;
     static unsigned char masktable[] = {
 	0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80 };
     int padded = ((width & 7) != 0);
-
-    if (!scanline) {
-	fprintf (stderr, "%s:  unable to allocate %d bytes for scanline\n",
-		 ProgramName, width + 1);
-	exit (1);
-    }
 
     for (row = 0; row < height; row++) {
 	for (column = 0; column < width; column++) {
