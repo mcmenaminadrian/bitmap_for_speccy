@@ -37,7 +37,6 @@ AM_CONFIG_HEADER(config.h)
 
 AC_PROG_CC
 AM_PROG_CC_C_O
-AC_PROG_INSTALL
 
 AC_CHECK_FUNC([mkstemp], 
    AC_DEFINE(HAS_MKSTEMP,1,[Define to 1 if you have the "mkstemp" function.]))
