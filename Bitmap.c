@@ -35,7 +35,6 @@ from The Open Group.
 #include <X11/Xaw/XawInit.h>
 #include <X11/Xmu/CharSet.h>
 #include <X11/Xmu/Drawing.h>
-#include <X11/Xmu/SysUtil.h>
 #include <X11/Xatom.h>
 #include <X11/Xfuncs.h>
 #include <X11/Xos.h>
@@ -1023,7 +1022,7 @@ BWUnparseStatus(Widget w)
 {
     BitmapWidget BW = (BitmapWidget) w;
     
-    XmuSnprintf(BW->bitmap.status, sizeof(BW->bitmap.status),
+    snprintf(BW->bitmap.status, sizeof(BW->bitmap.status),
 	    "Filename: %s  Basename: %s  Size: %dx%d",
 	    (strcmp(BW->bitmap.filename, "") ? BW->bitmap.filename : "<none>"),
 	    (strcmp(BW->bitmap.basename, "") ? BW->bitmap.basename : "<none>"),
