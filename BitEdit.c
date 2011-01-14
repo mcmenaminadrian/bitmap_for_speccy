@@ -50,7 +50,7 @@ from The Open Group.
 
 #include <X11/bitmaps/xlogo16>
 
-static char *usage = "[-options ...] filename\n\
+static const char *usage = "[-options ...] filename\n\
 \n\
 where options include all standard toolkit options plus:\n\
      -size WIDTHxHEIGHT\n\
@@ -982,7 +982,7 @@ int main(int argc, char *argv[])
 			      options, XtNumber(options), &argc, argv);
 
     if (argc > 2) {
-	fprintf(stderr, usage);
+	fputs(usage, stderr);
 	exit (0);
     }
 
