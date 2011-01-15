@@ -40,8 +40,7 @@ XORG_DEFAULT_OPTIONS
 
 AM_PROG_CC_C_O
 
-AC_CHECK_FUNC([mkstemp], 
-   AC_DEFINE(HAS_MKSTEMP,1,[Define to 1 if you have the "mkstemp" function.]))
+AC_CHECK_FUNCS([mkstemp])
 
 # Obtain compiler/linker options from depedencies
 PKG_CHECK_MODULES(BMTOA, x11 xmu)

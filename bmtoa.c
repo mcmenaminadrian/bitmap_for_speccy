@@ -44,7 +44,7 @@ from The Open Group.
 
 #include <stdlib.h>
 #include <unistd.h>
-#ifndef HAS_MKSTEMP
+#ifndef HAVE_MKSTEMP
 extern char *mktemp();
 #endif
 
@@ -78,7 +78,7 @@ copy_stdin (void)
     FILE *fp;
     int nread, nwritten;
 
-#ifndef HAS_MKSTEMP
+#ifndef HAVE_MKSTEMP
     if (mktemp (tmpfilename) == NULL) {
 	fprintf (stderr,
 		 "%s:  unable to genererate temporary file name for stdin.\n",
