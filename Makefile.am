@@ -42,7 +42,7 @@ bmtoa_LDADD = $(BMTOA_LIBS)
 bmtoa_SOURCES = bmtoa.c
 
 atobm_CFLAGS = $(CWARNFLAGS) $(ATOBM_CFLAGS)
-atobm_LDADD = $(ATOBM_LDADD)
+atobm_LDADD = $(ATOBM_LIBS)
 atobm_SOURCES = atobm.c
 
 EXTRA_DIST = autogen.sh

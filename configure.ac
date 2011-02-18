@@ -42,9 +42,9 @@ AM_PROG_CC_C_O
 
 AC_CHECK_FUNCS([mkstemp])
 
-# Obtain compiler/linker options from depedencies
+# Obtain compiler/linker options from dependencies
 PKG_CHECK_MODULES(BMTOA, x11 xmu)
-PKG_CHECK_MODULES(ATOBM, x11)
+PKG_CHECK_MODULES(ATOBM, xproto)
 PKG_CHECK_MODULES(BITMAP, xbitmaps xaw7 xmu)
 
 PKG_CHECK_MODULES(APPDEFS, xt)
