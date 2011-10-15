@@ -177,7 +177,7 @@ from The Open Group.
 /* bitmap exports */
 
 typedef struct _BWRequestRec BWRequestRec;
-typedef char *BWRequest;
+typedef const char *BWRequest;
 
 /* declare specific BitmapWidget class and instance datatypes */
 
