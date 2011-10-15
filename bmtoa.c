@@ -51,7 +51,7 @@ extern char *mktemp();
 static char *ProgramName;
 
 static void print_scanline (unsigned int width, unsigned int height,
-			    unsigned char *data, char *chars);
+			    unsigned const char *data, const char *chars);
 
 static void
 usage (void)
@@ -118,9 +118,9 @@ copy_stdin (void)
 int
 main (int argc, char *argv[])
 {
-    char *filename = NULL;
+    const char *filename = NULL;
     int isstdin = 0;
-    char *chars = "-#";
+    const char *chars = "-#";
     int i;
     unsigned int width, height;
     unsigned char *data;
@@ -130,7 +130,7 @@ main (int argc, char *argv[])
     ProgramName = argv[0];
 
     for (i = 1; i < argc; i++) {
-	char *arg = argv[i];
+	const char *arg = argv[i];
 
 	if (arg[0] == '-') {
 	    switch (arg[1]) {
@@ -177,12 +177,12 @@ main (int argc, char *argv[])
 static void
 print_scanline (unsigned int width,
 		unsigned int height,
-		unsigned char *data,
-		char *chars)
+		unsigned const char *data,
+		const char *chars)
 {
-    unsigned char *dp = data;
+    unsigned const char *dp = data;
     int row, column;
-    static unsigned char masktable[] = {
+    static unsigned const char masktable[] = {
 	0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80 };
     int padded = ((width & 7) != 0);
 
