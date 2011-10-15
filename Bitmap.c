@@ -644,10 +644,11 @@ BWPutImage(BitmapWidget w, Display *display, Drawable drawable, GC gc,
 #endif
 
 static String 
-StripFilename(String filename)
+StripFilename(_Xconst _XtString filename)
 {
-    char *begin = strrchr(filename, '/');
-    char *end, *result;
+    const char *begin = strrchr(filename, '/');
+    const char *end;
+    char *result;
     int length;
     
     if (filename) {
@@ -664,7 +665,8 @@ StripFilename(String filename)
 }
 
 static int 
-XmuWriteBitmapDataToFile(String filename, String basename, 
+XmuWriteBitmapDataToFile(_Xconst _XtString filename,
+			 _Xconst _XtString basename,
 			 int width, int height, char *datap, 
 			 int x_hot, int y_hot)
 {
@@ -993,7 +995,7 @@ FixMark(BitmapWidget BW)
 
 /* ARGSUSED */
 int 
-BWStoreFile(Widget w, String filename, String *basename)
+BWStoreFile(Widget w, _Xconst _XtString filename, _Xconst _XtString *basename)
 {
     BitmapWidget BW = (BitmapWidget) w;
     int status;
@@ -1032,7 +1034,7 @@ BWUnparseStatus(Widget w)
 }
 
 void 
-BWChangeFilename(Widget w, String str)
+BWChangeFilename(Widget w, _Xconst _XtString str)
 {
   BitmapWidget BW = (BitmapWidget) w;
   
@@ -1043,7 +1045,7 @@ BWChangeFilename(Widget w, String str)
 }
 
 void 
-BWChangeBasename(Widget w, String str)
+BWChangeBasename(Widget w, _Xconst _XtString str)
 {
   BitmapWidget BW = (BitmapWidget) w;
   
@@ -1055,7 +1057,7 @@ BWChangeBasename(Widget w, String str)
 
 
 int 
-BWReadFile(Widget w, String filename, String basename) /* ARGSUSED */
+BWReadFile(Widget w, _Xconst _XtString filename, _Xconst _XtString basename) /* ARGSUSED */
 {
     BitmapWidget BW = (BitmapWidget) w;
     int status;
@@ -1152,7 +1154,7 @@ BWSetImage(Widget w, XImage *image)
 #endif
 
 int 
-BWWriteFile(Widget w, String filename, String basename)
+BWWriteFile(Widget w, _Xconst _XtString filename, _Xconst _XtString basename)
 {
     BitmapWidget BW = (BitmapWidget) w;
     char *data;
