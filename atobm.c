@@ -38,8 +38,8 @@ from The Open Group.
 
 static char *ProgramName;
 
-static void doit(FILE *fp, char *filename, char *chars,
-		 int xhot, int yhot, char *name);
+static void doit(FILE *fp, const char *filename, const char *chars,
+		 int xhot, int yhot, const char *name);
 
 static void
 usage (void)
@@ -96,8 +96,8 @@ main (int argc, char *argv[])
     int i;
     int xhot = -1, yhot = -1;
     char *filename = NULL;
-    char *chars = "-#";
-    char *name = NULL;
+    const char *chars = "-#";
+    const char *name = NULL;
     FILE *fp;
 
     ProgramName = argv[0];
@@ -152,8 +152,8 @@ main (int argc, char *argv[])
 	fp = stdin;
     }
 
-    if (!name) name = filename ? StripName (filename) : "";
-    cify_name (name);
+    if (!name)
+	name = filename ? cify_name (StripName (filename)) : "";
     doit (fp, filename, chars, xhot, yhot, name);
 
     if (filename) (void) fclose (fp);
@@ -163,10 +163,10 @@ main (int argc, char *argv[])
 
 static void
 doit (FILE *fp,
-      char *filename,
-      char *chars,
+      const char *filename,
+      const char *chars,
       int xhot, int yhot,
-      char *name)
+      const char *name)
 {
     int i, j;
     int last_character;
