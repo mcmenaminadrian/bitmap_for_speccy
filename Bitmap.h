@@ -45,7 +45,7 @@ from The Open Group.
 /* Resources:
 
  Name		     Class		RepType		Default Value
- ----		     -----		-------		------------- 
+ ----		     -----		-------		-------------
  background	     Background		Pixel		XtDefaultBackground
  foreground          Foredround         Pixel           XtDefaultForeground
  highlight           Highlight          Pixel           XtDefaultForeground
@@ -73,7 +73,7 @@ from The Open Group.
  stipple             Stipple            Bitmap          XtUnspecifiedPixmap
  proportional        Proportional       Boolean         True
  axes                Axes               Boolean         True
- button1Function     Button1Function    ButtonFunction  Set  
+ button1Function     Button1Function    ButtonFunction  Set
  button2Function     Button2Function    ButtonFunction  Invert
  button3Function     Button3Function    ButtonFunction  Clear
  button4Function     Button4Function    ButtonFunction  Invert
@@ -187,7 +187,7 @@ typedef struct _BitmapRec      *BitmapWidget;
 
 extern WidgetClass bitmapWidgetClass;
 
-extern Boolean BWEngageRequest(Widget w, BWRequest name, Boolean trap, 
+extern Boolean BWEngageRequest(Widget w, BWRequest name, Boolean trap,
 			       XtPointer call_data, Cardinal call_data_size);
 extern Boolean BWTerminateRequest(Widget w, Boolean cont);
 

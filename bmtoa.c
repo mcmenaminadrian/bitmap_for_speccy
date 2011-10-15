@@ -50,15 +50,15 @@ extern char *mktemp();
 
 static char *ProgramName;
 
-static void print_scanline (unsigned int width, unsigned int height, 
+static void print_scanline (unsigned int width, unsigned int height,
 			    unsigned char *data, char *chars);
 
-static void 
+static void
 usage (void)
 {
     fprintf (stderr, "usage:  %s [-options ...] [filename]\n\n",
 	     ProgramName);
-    fprintf (stderr, 
+    fprintf (stderr,
 	"where options include:\n");
     fprintf (stderr,
 	"    -chars cc        chars to use for 0 and 1 bits, respectively\n");
@@ -116,7 +116,7 @@ copy_stdin (void)
 }
 
 int
-main (int argc, char *argv[]) 
+main (int argc, char *argv[])
 {
     char *filename = NULL;
     int isstdin = 0;
@@ -175,9 +175,9 @@ main (int argc, char *argv[])
 }
 
 static void
-print_scanline (unsigned int width, 
-		unsigned int height, 
-		unsigned char *data, 
+print_scanline (unsigned int width,
+		unsigned int height,
+		unsigned char *data,
 		char *chars)
 {
     unsigned char *dp = data;
