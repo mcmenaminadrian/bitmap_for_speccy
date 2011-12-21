@@ -42,6 +42,18 @@ AM_PROG_CC_C_O
 
 AC_CHECK_FUNCS([mkstemp])
 
+# Math libraries & functions
+# - some compilers use builtin inlines for floor when optimizing
+# - lrint() is a C99 addition not found on some older systems
+# - must do the libm check first so that the lrint check will have it in $LIBS
+save_LIBS="$LIBS"
+AC_SEARCH_LIBS([floor], [m])
+AC_SEARCH_LIBS([lrint], [m])
+AC_CHECK_FUNCS([lrint])
+MATH_LIBS="$LIBS"
+LIBS="$save_LIBS"
+AC_SUBST([MATH_LIBS])
+
 # Obtain compiler/linker options from dependencies
 PKG_CHECK_MODULES(BMTOA, x11 xmu)
 PKG_CHECK_MODULES(ATOBM, xproto)

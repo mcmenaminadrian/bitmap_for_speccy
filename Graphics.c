@@ -30,6 +30,10 @@ from The Open Group.
  * Author:  Davor Matic, MIT X Consortium
  */
 
+#ifdef HAVE_CONFIG_H
+# include "config.h"
+#endif
+
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
 #include <X11/Xfuncs.h>
@@ -46,7 +50,11 @@ from The Open Group.
 #define min(x, y)                     (((int)(x) < (int)(y)) ? (x) : (y))
 #define max(x, y)                     (((int)(x) > (int)(y)) ? (x) : (y))
 #ifndef rint
-#define rint(x)                       floor(x + 0.5)
+# if HAVE_LRINT
+#  define rint(x)                     lrint(x)
+# else
+#  define rint(x)                     floor(x + 0.5)
+# endif
 #endif
 
 /*****************************************************************************\

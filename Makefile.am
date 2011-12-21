@@ -23,7 +23,7 @@ SUBDIRS=man
 bin_PROGRAMS = bitmap bmtoa atobm
 
 bitmap_CFLAGS = $(CWARNFLAGS) $(BITMAP_CFLAGS)
-bitmap_LDADD = $(BITMAP_LIBS) -lm
+bitmap_LDADD = $(BITMAP_LIBS) $(MATH_LIBS)
 bitmap_SOURCES = \
          BitEdit.c \
          CutPaste.c \
