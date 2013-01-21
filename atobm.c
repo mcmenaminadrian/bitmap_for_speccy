@@ -44,19 +44,13 @@ static void doit(FILE *fp, const char *filename, const char *chars,
 static void
 usage (void)
 {
-    fprintf (stderr, "usage:  %s [-options ...] [filename]\n\n",
-	     ProgramName);
-    fprintf (stderr,
-	"where options include:\n");
-    fprintf (stderr,
-	"    -chars cc        chars to use for 0 and 1 bits, respectively\n");
-    fprintf (stderr,
-	"    -name variable   name to use in bitmap file\n");
-    fprintf (stderr,
-	"    -xhot number     x position of hotspot\n");
-    fprintf (stderr,
-	"    -yhot number     y position of hotspot\n");
-    fprintf (stderr, "\n");
+    fprintf (stderr, "usage:  %s [-options ...] [filename]\n\n%s\n",
+	     ProgramName,
+             "where options include:\n"
+             "    -chars cc        chars to use for 0 and 1 bits, respectively\n"
+             "    -name variable   name to use in bitmap file\n"
+             "    -xhot number     x position of hotspot\n"
+             "    -yhot number     y position of hotspot\n");
     exit (1);
 }
 

@@ -56,13 +56,10 @@ static void print_scanline (unsigned int width, unsigned int height,
 static void
 usage (void)
 {
-    fprintf (stderr, "usage:  %s [-options ...] [filename]\n\n",
-	     ProgramName);
-    fprintf (stderr,
-	"where options include:\n");
-    fprintf (stderr,
+    fprintf (stderr, "usage:  %s [-options ...] [filename]\n\n%s\n",
+	     ProgramName,
+	"where options include:\n"
 	"    -chars cc        chars to use for 0 and 1 bits, respectively\n");
-    fprintf (stderr, "\n");
     exit (1);
 }
 
