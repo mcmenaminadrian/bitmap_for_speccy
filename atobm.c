@@ -34,6 +34,7 @@ from The Open Group.
 #include <stdio.h>
 #include <ctype.h>
 #include <X11/Xos.h>
+#include <X11/Xfuncproto.h>
 #include <stdlib.h>
 
 static char *ProgramName;
@@ -41,7 +42,7 @@ static char *ProgramName;
 static void doit(FILE *fp, const char *filename, const char *chars,
 		 int xhot, int yhot, const char *name);
 
-static void
+static void _X_NORETURN
 usage (void)
 {
     fprintf (stderr, "usage:  %s [-options ...] [filename]\n\n%s\n",

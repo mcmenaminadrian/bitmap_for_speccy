@@ -53,7 +53,7 @@ static char *ProgramName;
 static void print_scanline (unsigned int width, unsigned int height,
 			    unsigned const char *data, const char *chars);
 
-static void
+static void _X_NORETURN
 usage (void)
 {
     fprintf (stderr, "usage:  %s [-options ...] [filename]\n\n%s\n",
