@@ -72,28 +72,23 @@ copy_stdin (void)
     static char tmpfilename[] = "/tmp/bmtoa.XXXXXX";
 #endif
     char buf[BUFSIZ];
-    FILE *fp;
+    FILE *fp = NULL;
     int nread, nwritten;
 
 #ifndef HAVE_MKSTEMP
-    if (mktemp (tmpfilename) == NULL) {
-	fprintf (stderr,
-		 "%s:  unable to generate temporary file name for stdin.\n",
-		 ProgramName);
-	exit (1);
-    }
-    fp = fopen (tmpfilename, "w");
+    if (mktemp (tmpfilename) != NULL)
+	fp = fopen (tmpfilename, "w");
 #else
     int fd;
-
-    if ((fd = mkstemp(tmpfilename)) < 0) {
+    if ((fd = mkstemp(tmpfilename)) >= 0)
+	fp = fdopen(fd, "w");
+#endif
+    if (fp == NULL) {
 	fprintf (stderr,
-		 "%s:  unable to generate temporary file name for stdin.\n",
+		 "%s:  unable to generate temporary file for stdin.\n",
 		 ProgramName);
 	exit (1);
     }
-    fp = fdopen(fd, "w");
-#endif
     while (1) {
 	buf[0] = '\0';
 	nread = fread (buf, 1, sizeof buf, stdin);
