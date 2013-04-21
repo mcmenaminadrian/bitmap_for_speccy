@@ -78,7 +78,7 @@ copy_stdin (void)
 #ifndef HAVE_MKSTEMP
     if (mktemp (tmpfilename) == NULL) {
 	fprintf (stderr,
-		 "%s:  unable to genererate temporary file name for stdin.\n",
+		 "%s:  unable to generate temporary file name for stdin.\n",
 		 ProgramName);
 	exit (1);
     }
@@ -88,7 +88,7 @@ copy_stdin (void)
 
     if ((fd = mkstemp(tmpfilename)) < 0) {
 	fprintf (stderr,
-		 "%s:  unable to genererate temporary file name for stdin.\n",
+		 "%s:  unable to generate temporary file name for stdin.\n",
 		 ProgramName);
 	exit (1);
     }
