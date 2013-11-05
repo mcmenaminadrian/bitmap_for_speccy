@@ -56,7 +56,7 @@ AC_SUBST([MATH_LIBS])
 
 # Obtain compiler/linker options from dependencies
 PKG_CHECK_MODULES(BMTOA, [x11 xmu xproto >= 7.0.17])
-PKG_CHECK_MODULES(ATOBM, [xproto >= 7.0.17])
+PKG_CHECK_MODULES(ATOBM, [xproto >= 7.0.25])
 PKG_CHECK_MODULES(BITMAP, xbitmaps xaw7 xmu)
 
 PKG_CHECK_MODULES(APPDEFS, xt)

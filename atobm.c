@@ -42,9 +42,11 @@ static char *ProgramName;
 static void doit(FILE *fp, const char *filename, const char *chars,
 		 int xhot, int yhot, const char *name);
 
-static void _X_NORETURN
-usage (void)
+static void _X_NORETURN _X_COLD
+usage (const char *msg)
 {
+    if (msg)
+	fprintf(stderr, "%s: %s\n", ProgramName, msg);
     fprintf (stderr, "usage:  %s [-options ...] [filename]\n\n%s\n",
 	     ProgramName,
              "where options include:\n"
@@ -55,6 +57,14 @@ usage (void)
     exit (1);
 }
 
+static void _X_NORETURN _X_COLD
+missing_arg (const char *option)
+{
+    char msg[32];
+
+    snprintf(msg, sizeof(msg), "%s requires an argument", option);
+    usage(msg);
+}
 
 static char *
 cify_name (char *name)
@@ -106,23 +116,25 @@ main (int argc, char *argv[])
 		filename = NULL;
 		continue;
 	      case 'c':
-		if (++i >= argc) usage ();
+		if (++i >= argc) missing_arg("-chars");
 		chars = argv[i];
 		continue;
 	      case 'n':
-		if (++i >= argc) usage ();
+		if (++i >= argc) missing_arg("-name");
 		name = argv[i];
 		continue;
 	      case 'x':
-		if (++i >= argc) usage ();
+		if (++i >= argc) missing_arg("-xhot");
 		xhot = atoi (argv[i]);
 		continue;
 	      case 'y':
-		if (++i >= argc) usage ();
+		if (++i >= argc) missing_arg("-yhot");
 		yhot = atoi (argv[i]);
 		continue;
 	      default:
-		usage ();
+		fprintf(stderr, "%s: unrecognized option '%s'\n",
+			ProgramName, argv[i]);
+		usage (NULL);
 	    }
 	} else {
 	    filename = arg;
