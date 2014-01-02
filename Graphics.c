@@ -57,6 +57,12 @@ from The Open Group.
 # endif
 #endif
 
+#ifdef __clang__
+/* clang doesn't like (int)floor(d) */
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wbad-function-cast"
+#endif
+
 /*****************************************************************************\
  *                                   Graphics                                *
 \*****************************************************************************/
