@@ -903,20 +903,20 @@ Initialize(Widget wrequest, Widget wnew, ArgList argv, Cardinal *argc)
     {
 	int status;
 	XImage *image, *buffer;
-	unsigned char *image_data;
-	char *buffer_data;
+	unsigned char *image_data2;
+	char *buffer_data2;
 	unsigned int width, height;
 	int x_hot, y_hot;
 
 	status = XmuReadBitmapDataFromFile(new->bitmap.filename,
-					   &width, &height, &image_data,
+					   &width, &height, &image_data2,
 					   &x_hot, &y_hot);
 	if (status == BitmapSuccess) {
 
-	    buffer_data = CreateCleanData(Length(width, height));
+	    buffer_data2 = CreateCleanData(Length(width, height));
 
-	    image = CreateBitmapImage(new, (char *)image_data, width, height);
-	    buffer = CreateBitmapImage(new, buffer_data, width, height);
+	    image = CreateBitmapImage(new, (char *)image_data2, width, height);
+	    buffer = CreateBitmapImage(new, buffer_data2, width, height);
 
 	    TransferImageData(new->bitmap.image, buffer);
 
