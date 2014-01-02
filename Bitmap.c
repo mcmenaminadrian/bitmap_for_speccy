@@ -41,6 +41,7 @@ from The Open Group.
 #include "BitmapP.h"
 #include "Bitmap.h"
 
+#include <assert.h>
 #include <stdio.h>
 #include <math.h>
 
@@ -1238,6 +1239,8 @@ BWGetFilepath(Widget w, String *str)
     String end;
 
     *str = XtNewString(BW->bitmap.filename);
+    assert(*str);
+
     end = strrchr(*str, '/');
 
     if (end)
