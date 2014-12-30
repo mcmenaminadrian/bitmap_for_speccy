@@ -1103,7 +1103,7 @@ BWReadFile(Widget w, _Xconst _XtString filename, _Xconst _XtString basename) /* 
 	XtFree(BW->bitmap.filename);
 	BW->bitmap.filename = XtNewString(filename);
 	XtFree(BW->bitmap.basename);
-	BW->bitmap.basename= XtNewString(StripFilename(filename));
+	BW->bitmap.basename = StripFilename(filename);
 
 	BWUnmark(w);
 
@@ -1199,7 +1199,7 @@ BWWriteFile(Widget w, _Xconst _XtString filename, _Xconst _XtString basename)
 	XtFree(BW->bitmap.filename);
 	BW->bitmap.filename = XtNewString(filename);
 	XtFree(BW->bitmap.basename);
-	BW->bitmap.basename= XtNewString(StripFilename(filename));
+	BW->bitmap.basename = StripFilename(filename);
     }
     if (!basename) basename = BW->bitmap.basename;
     else {
