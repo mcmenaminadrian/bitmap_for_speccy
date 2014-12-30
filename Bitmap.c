@@ -687,10 +687,14 @@ XmuWriteBitmapDataToFile(_Xconst _XtString filename,
     else
     	file = fopen(filename, "w+");
 
-    if (!basename || !strcmp(basename, "") || !strcmp(basename, "-"))
-	basename = StripFilename(filename);
-
     if (file) {
+	String new_basename;
+
+	if (!basename || !strcmp(basename, "") || !strcmp(basename, "-"))
+	    basename = new_basename = StripFilename(filename);
+	else
+	    new_basename = NULL;
+
 	fprintf(file, "#define %s_width %d\n", basename, width);
 	fprintf(file, "#define %s_height %d\n", basename, height);
 	if (QuerySet(x_hot, y_hot)) {
@@ -709,6 +713,7 @@ XmuWriteBitmapDataToFile(_Xconst _XtString filename,
 	if (file != stdout)
 	    fclose(file);
 
+	XtFree(new_basename);
 	return BitmapSuccess;
     }
 
