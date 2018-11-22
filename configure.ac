@@ -24,7 +24,7 @@ dnl Process this file with autoconf to create configure.
 # Initialize Autoconf
 AC_PREREQ([2.60])
 AC_INIT([bitmap], [1.0.8],
-	[https://bugs.freedesktop.org/enter_bug.cgi?product=xorg], [bitmap])
+	[https://gitlab.freedesktop.org/xorg/app/bitmap/issues], [bitmap])
 AC_CONFIG_SRCDIR([Makefile.am])
 AC_CONFIG_HEADERS([config.h])
 
