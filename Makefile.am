@@ -22,6 +22,8 @@
 SUBDIRS=man
 bin_PROGRAMS = bitmap bmtoa atobm
 
+AM_CPPFLAGS = -D_CONST_X_STRING
+
 bitmap_CFLAGS = $(CWARNFLAGS) $(BITMAP_CFLAGS)
 bitmap_LDADD = $(BITMAP_LIBS) $(MATH_LIBS)
 bitmap_SOURCES = \

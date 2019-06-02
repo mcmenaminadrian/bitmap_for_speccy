@@ -648,7 +648,7 @@ BWPutImage(BitmapWidget w, Display *display, Drawable drawable, GC gc,
 }
 #endif
 
-static String
+static char *
 StripFilename(_Xconst _XtString filename)
 {
     const char *begin = strrchr(filename, '/');
@@ -688,7 +688,7 @@ XmuWriteBitmapDataToFile(_Xconst _XtString filename,
     	file = fopen(filename, "w+");
 
     if (file) {
-	String new_basename;
+	char *new_basename;
 
 	if (!basename || !strcmp(basename, "") || !strcmp(basename, "-"))
 	    basename = new_basename = StripFilename(filename);
@@ -1227,8 +1227,8 @@ BWWriteFile(Widget w, _Xconst _XtString filename, _Xconst _XtString basename)
     return status;
 }
 
-String
-BWGetFilename(Widget w, String *str)
+_XtString
+BWGetFilename(Widget w, _XtString *str)
 {
     BitmapWidget BW = (BitmapWidget) w;
 
@@ -1237,11 +1237,11 @@ BWGetFilename(Widget w, String *str)
     return *str;
 }
 
-String
-BWGetFilepath(Widget w, String *str)
+_XtString
+BWGetFilepath(Widget w, _XtString *str)
 {
     BitmapWidget BW = (BitmapWidget) w;
-    String end;
+    _XtString end;
 
     *str = XtNewString(BW->bitmap.filename);
     assert(*str);
@@ -1257,8 +1257,8 @@ BWGetFilepath(Widget w, String *str)
 }
 
 
-String
-BWGetBasename(Widget w, String *str)
+_XtString
+BWGetBasename(Widget w, _XtString *str)
 {
     BitmapWidget BW = (BitmapWidget) w;
 
