@@ -1389,7 +1389,7 @@ BWZoomIn(Widget w,
     BW->bitmap.mark.to_x = NotSet;
     BW->bitmap.mark.to_y = NotSet;
     BW->bitmap.zooming = True;
-    BW->bitmap.grid = True; /* potencially true, could use a resource here */
+    BW->bitmap.grid = True; /* potentially true, could use a resource here */
 
     FixHotSpot(BW);
 
