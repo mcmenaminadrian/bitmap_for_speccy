@@ -963,12 +963,14 @@ BWParseSize(String size, Dimension *width, Dimension *height)
 
   status = XParseGeometry(size, &x, &y, &w, &h);
 
-  if (status & (WidthValue | HeightValue)) {
+  if (status & WidthValue) {
     *width = (Dimension) w;
-    *height = (Dimension) h;
-    return True;
+    if (status & HeightValue) {
+      *height = (Dimension) h;
+      return True;
+    }
   }
-  else return False;
+  return False;
 
 }
 
