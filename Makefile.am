@@ -74,6 +74,8 @@ dist_appdefault_DATA = \
 	app-defaults/Bitmap-nocase \
 	app-defaults/Bitmap
 
+TESTS = test/round-trip-test
+
 MAINTAINERCLEANFILES = ChangeLog INSTALL
 
 .PHONY: ChangeLog INSTALL

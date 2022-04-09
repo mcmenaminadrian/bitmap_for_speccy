@@ -68,4 +68,5 @@ AC_SUBST(appdefaultdir)
 
 AC_CONFIG_FILES([Makefile
            man/Makefile])
+AC_CONFIG_FILES([test/round-trip-test], [chmod +x test/round-trip-test])
 AC_OUTPUT
