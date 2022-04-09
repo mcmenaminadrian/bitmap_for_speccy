@@ -51,19 +51,19 @@ EXTRA_DIST = autogen.sh README.md
 
 bitmapdir = $(includedir)/X11/bitmaps
 dist_bitmap_DATA =	\
-	Dashes		\
-	Down		\
-	Excl		\
-	FlipHoriz	\
-	FlipVert	\
-	Fold		\
-	Left		\
-	Right		\
-	RotateLeft	\
-	RotateRight	\
-	Stipple		\
-	Term		\
-	Up
+	bitmaps/Dashes		\
+	bitmaps/Down		\
+	bitmaps/Excl		\
+	bitmaps/FlipHoriz	\
+	bitmaps/FlipVert	\
+	bitmaps/Fold		\
+	bitmaps/Left		\
+	bitmaps/Right		\
+	bitmaps/RotateLeft	\
+	bitmaps/RotateRight	\
+	bitmaps/Stipple		\
+	bitmaps/Term		\
+	bitmaps/Up
 
 # App default files  (*.ad)
 DISTCHECK_CONFIGURE_FLAGS = --with-appdefaultdir=\$${datadir}/X11/app-defaults
