@@ -238,7 +238,7 @@ doit (FILE *fp,
 	    newline++;
 	}
 
-	if (newline == cp + 1) continue;
+	if (newline == cp) continue;
 
 	*newline = '\0';
 	len = strlen (cp);
