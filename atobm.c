@@ -31,6 +31,10 @@ from The Open Group.
  * Author:  Jim Fulton, MIT X Consortium
  */
 
+#ifdef HAVE_CONFIG_H
+# include "config.h"
+#endif
+
 #include <stdio.h>
 #include <ctype.h>
 #include <X11/Xos.h>
