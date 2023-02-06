@@ -68,6 +68,8 @@ where options include all standard toolkit options plus:\n\
      -stipple filename\n\
      -hl color\n\
      -fr color\n\
+     -help\n\
+     -version\n\
 \n\
 The default WIDTHxHEIGHT is 16x16.\n";
 
@@ -978,6 +980,23 @@ int main(int argc, char *argv[])
     Widget w;
     Widget radio_group = NULL;
     XtPointer radio_data = NULL;
+
+    /* Handle args that don't require opening a display */
+    for (int a = 1; a < argc; a++) {
+	const char *argn = argv[a];
+	/* accept single or double dash for -help & -version */
+	if (argn[0] == '-' && argn[1] == '-') {
+	    argn++;
+	}
+	if (strcmp(argn, "-help") == 0) {
+	    fprintf(stderr, "usage: %s %s", argv[0], usage);
+	    exit(0);
+	}
+	if (strcmp(argn, "-version") == 0) {
+	    puts(PACKAGE_STRING);
+	    exit(0);
+	}
+    }
 
     top_widget = XtInitialize(NULL, "Bitmap",
 			      options, XtNumber(options), &argc, argv);
