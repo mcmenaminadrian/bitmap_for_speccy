@@ -113,6 +113,8 @@ static ButtonRec file_menu[] = {
   {Save, "save", True},
 #define SaveAs 105
   {SaveAs, "saveAs", True},
+#define NumericOut 111
+  {NumericOut, "numericOut", True},
 #define Resize 106
   {Resize, "resize", True},
 #define Rescale 107
@@ -249,6 +251,7 @@ void DoLoad( void );
 void DoInsert( void );
 void DoSave( void );
 void DoSaveAs( void );
+void DoNumericOut( void );
 void DoResize( void );
 void DoRescale( void );
 void DoFilename( void );
@@ -441,6 +444,10 @@ TheCallback(Widget w,	/* not used */
 
     case SaveAs:
       DoSaveAs();
+      break;
+
+    case NumericOut:
+      DoNumericOut();
       break;
 
     case Resize:
@@ -881,6 +888,25 @@ void DoSaveAs(void)
       FixStatus();
     }
   }
+}
+
+void DoNumericOut(void)
+{
+  BWGetBasename(bitmap_widget, &base_name);
+  RetryNumeric:
+  if (PopupDialog(input_dialog, "Save numeric string:",
+		  base_name, &filename, XtGrabExclusive) == Okay) {
+    if (BWWriteNumeric(bitmap_widget, filename) != BitmapSuccess) {
+      if (PopupDialog(error_dialog, message,
+	      NULL, NULL, XtGrabExclusive) == Retry) {
+        goto RetryNumeric;
+      }
+    }
+    else {
+      BWClearChanged(bitmap_widget);
+      FixStatus();
+    }
+  } 
 }
 
 void DoResize(void)

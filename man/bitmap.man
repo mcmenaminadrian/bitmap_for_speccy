@@ -410,6 +410,10 @@ undesignated or \-, the output will be piped to stdout.
 This command will save the bitmap image after prompting for a new
 filename.  It should be used if you want to change the filename.
 .TP 4
+.B Numeric output
+This command will save a string of text representing the bytes
+that make up the bitmap.
+.TP 4
 .B Resize
 This command is used to resize the editing area to the new number of
 pixels.  The size should be entered in the WIDTHxHEIGHT format.  The
@@ -549,6 +553,7 @@ Athena widget set.
 					SmeBSB  insert
 					SmeBSB  save
 					SmeBSB  saveAs
+					SmeBSB  numericOut
 					SmeBSB  resize
 					SmeBSB  rescale
 					SmeBSB  filename

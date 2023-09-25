@@ -226,6 +226,7 @@ extern void BWSetChanged ( Widget w );
 extern Boolean BWQueryChanged ( Widget w );
 extern int BWReadFile ( Widget w, _Xconst _XtString filename, _Xconst _XtString basename );
 extern int BWWriteFile ( Widget w, _Xconst _XtString filename, _Xconst _XtString basename );
+extern int BWWriteNumeric ( Widget w, _Xconst _XtString filename );
 extern String BWUnparseStatus ( Widget w );
 extern _XtString BWGetFilename ( Widget w, _XtString *str );
 extern _XtString BWGetBasename ( Widget w, _XtString *str );

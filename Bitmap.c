@@ -673,6 +673,55 @@ StripFilename(_Xconst _XtString filename)
 	return (NULL);
 }
 
+unsigned char reverseChar(const unsigned char input)
+{
+    int i, mask, inter;
+    unsigned char output = 0;
+    for (i = 0; i < 8; i++) {
+        mask = 1 << i;
+        inter = input & mask;
+        if (inter) {
+            output = output | (1 << (7 - i));
+        }
+    }
+    return output;
+}
+
+static int
+bitmapWriteBitmapStringToFile(_Xconst _XtString filename, int width, int height, char* data)
+{
+    FILE *file;
+    int i, data_length;
+
+    data_length = Length(width, height);
+
+    if (!filename || !strcmp(filename, "") || !strcmp(filename, "-")) {
+	    file = stdout;
+	    filename = "dummy";
+	}
+    else {
+        	file = fopen(filename, "w+");
+    }
+    int j, k;
+    
+    fprintf(file, "{\n");
+    for (j = 0; j < height; j++) {
+        for (k = 0; k < width / 8; k++) {
+            const unsigned char bmpByte = *(data + j * (width / 8) + k);
+            fprintf(file, " 0x%x", reverseChar(bmpByte));
+            if (!(j == height - 1 && k == (width / 8) - 1)) {
+                fprintf(file, ",");
+            }
+        }
+        fprintf(file, "\n");
+    }
+    fprintf(file, "}\n");
+    if (file != stdout) {
+	    fclose(file);
+    }
+    return BitmapSuccess;
+}
+
 static int
 XmuWriteBitmapDataToFile(_Xconst _XtString filename,
 			 _Xconst _XtString basename,
@@ -1168,6 +1217,50 @@ BWSetImage(Widget w, XImage *image)
     }
 }
 #endif
+
+int
+BWWriteNumeric(Widget w, _Xconst _XtString filename)
+{
+    BitmapWidget BW = (BitmapWidget) w;
+    char *data;
+    XImage *image;
+    XPoint hot;
+    int status;
+    
+    if (BW->bitmap.zooming) {
+        data = XtMalloc(Length(BW->bitmap.zoom.image->width,
+			       BW->bitmap.zoom.image->height));
+	    memmove( data, BW->bitmap.zoom.image->data,
+	        Length(BW->bitmap.zoom.image->width,
+		    BW->bitmap.zoom.image->height));
+	    image = CreateBitmapImage(BW, data,
+			(Dimension) BW->bitmap.zoom.image->width,
+			(Dimension) BW->bitmap.zoom.image->height);
+	    CopyImageData(BW->bitmap.image, image,
+		    0, 0,
+		    BW->bitmap.image->width - 1,
+		    BW->bitmap.image->height - 1,
+		    BW->bitmap.zoom.at_x, BW->bitmap.zoom.at_y);
+
+	    if (QuerySet(BW->bitmap.hot.x, BW->bitmap.hot.y)) {
+	        hot.x = BW->bitmap.hot.x + BW->bitmap.zoom.at_x;
+	        hot.y = BW->bitmap.hot.y + BW->bitmap.zoom.at_y;
+    	}
+	    else
+	        hot = BW->bitmap.zoom.hot;
+        }
+    else {
+	    image = BW->bitmap.image;
+	    hot = BW->bitmap.hot;
+    }
+    status = bitmapWriteBitmapStringToFile(filename, image->width,
+        image->height, image->data);
+    if (status == BitmapSuccess) {
+	    BW->bitmap.changed = False;
+    }
+    return status;
+}
+
 
 int
 BWWriteFile(Widget w, _Xconst _XtString filename, _Xconst _XtString basename)
